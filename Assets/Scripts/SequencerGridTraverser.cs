@@ -17,7 +17,7 @@ public class SequencerGridTraverser : MonoBehaviour
 
     public Mode SequencerDirection;
 
-    public int currentStep;
+    public int currentStep = 0;
 
     public SequencerGrid grid;
     private BPMTimer clock;
@@ -32,13 +32,20 @@ public class SequencerGridTraverser : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        int totalSteps = (grid.xSize * grid.ySize);
+
 		if (grid != null)
         {
+
             if (SequencerDirection == Mode.Forward)
-            {
+            { 
+
+                currentStep = currentStep > totalSteps ? 0 : currentStep = clock.GetBeat() % totalSteps;
+
                 for (int i = 0; i < grid.mainGrid.Length; i++)
                 {
-                    grid.GetPad(i).CurrentStep = (clock.GetBeat() % (grid.xSize * grid.ySize) == i);
+                    grid.GetPad(i).CurrentStep = currentStep == grid.GetPad(i).stepNumber;
+                    //grid.GetPad(i).CurrentStep = (clock.GetBeat() % (grid.xSize * grid.ySize) == i);
                 }
             }
         }

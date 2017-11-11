@@ -13,14 +13,21 @@ public class SequencerStep : MonoBehaviour {
     [SerializeField]
     private float DefaultAmp = 0.99f;
 
+    public int stepNumber = 0;
+
     private Renderer rend;
     private float amp = 0f;
     private static ulong randomSeed;
 
+    private Color colorOff = new Color(1f, 1f, 1f, 0.05f);
+    private Color colorCurrentStep = new Color(0f,1f,0f, 0.2f);
+    private Color colorActive = new Color(1f, 0f, 0f, 0.2f);
+
     // Use this for initialization
     void Start ()
     {
-        rend = GetComponent<Renderer>();	
+
+        rend = transform.GetChild(0).GetComponent<Renderer>();	
 	}
 
     // Update is called once per frame
@@ -28,12 +35,12 @@ public class SequencerStep : MonoBehaviour {
     {
         if (CurrentStep)
         {
-            rend.material.SetColor("_Color", Color.green);
+            rend.material.SetColor("_Color", colorCurrentStep);
             amp = DefaultAmp;
         }
         else
         {
-            Color col = active ? Color.red : Color.white;
+            Color col = active ? colorActive : colorOff;
             amp *= amp;
             rend.material.SetColor("_Color", col);
         }
