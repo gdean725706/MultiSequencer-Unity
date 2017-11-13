@@ -74,6 +74,10 @@ public class SequencerGrid : MonoBehaviour {
 
     public SequencerStep GetPad(int padNumber)
     {
+        if (padNumber >= steps.Length || padNumber <= 0)
+        {
+            padNumber = Mathf.Abs(padNumber % steps.Length);
+        }
         return steps[padNumber];
     }
 }

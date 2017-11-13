@@ -1,11 +1,5 @@
 ﻿using UnityEngine;
 
-// The code example shows how to implement a metronome that procedurally
-// generates the click sounds via the OnAudioFilterRead callback.
-// While the game is paused or suspended, this time will not be updated and sounds
-// playing will be paused. Therefore developers of music scheduling routines do not have
-// to do any rescheduling after the app is unpaused
-
 [RequireComponent(typeof(AudioSource))]
 public class BPMTimer : MonoBehaviour
 {
@@ -35,6 +29,16 @@ public class BPMTimer : MonoBehaviour
     [SerializeField]
     private int accentSum = 0;
 
+    private int direction = 0;
+
+    // Delegates for callback event when beat occurs
+    public delegate void IncrementBeat(int beat);
+    public static event IncrementBeat beatOccurred;
+
+    // And same for bars
+    public delegate void IncrementBar(int bar);
+    public static event IncrementBar barOccurred;
+
     void Start()
     {
         accent = signatureHi;
@@ -59,6 +63,11 @@ public class BPMTimer : MonoBehaviour
     public int GetBeat()
     {
         return halfAccentSum;
+    } 
+
+    public void setDirection(int dir)
+    {
+        direction = dir;
     }
 
     void OnAudioFilterRead(float[] data, int channels)
@@ -89,7 +98,20 @@ public class BPMTimer : MonoBehaviour
                     halfAccent = 1;
                 }
 
-                ++halfAccentSum;
+                switch (direction)
+                {
+                    case 0:
+                        ++halfAccentSum;
+                        if (beatOccurred != null)
+                            beatOccurred(1);
+                        break;
+                    case 1:
+                        --halfAccentSum;
+                        break;
+                    default:
+                        ++halfAccentSum;
+                        break;
+                }
             }
             while (sample + n >= nextTick)
             {
@@ -101,7 +123,20 @@ public class BPMTimer : MonoBehaviour
                     amp *= 2.0F;
                 }
 
-                ++accentSum;
+                switch(direction)
+                {
+                    case 0:
+                        ++accentSum;
+                        if (barOccurred != null)
+                            barOccurred(1);
+                        break;
+                    case 1:
+                        --accentSum;
+                        break;
+                    default:
+                        ++accentSum;
+                        break;
+                }
 
             }
             phase += amp * 0.3F;
