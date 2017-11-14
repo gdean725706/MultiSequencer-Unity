@@ -37,6 +37,7 @@ public class NoiseGenerator : MonoBehaviour
 		
 	}
 
+    // Linear-feedback shift register pseudorandom number generator
     float GetRandom()
     {
         const float scale = 1.0f / (float)0x7FFFFFFF;

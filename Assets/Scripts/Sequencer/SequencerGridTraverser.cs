@@ -10,14 +10,14 @@ public class SequencerGridTraverser : MonoBehaviour
         Forward,
         Reverse,
         PingPong,
-        Random,
         Diagonal,
         Brownian
     }
 
     public Mode SequencerDirection;
 
-    public int currentStep = 0;
+    public int JumpStepOffset = 0;
+    public int InitialOffset = 0;
 
     private int currentTick = 0;
     private int lastTick = 0;
@@ -47,6 +47,8 @@ public class SequencerGridTraverser : MonoBehaviour
         totalSteps = (grid.xSize * grid.ySize);
 
         awake = true;
+
+        currentTick += InitialOffset;
     }
 	
 	// Update is called once per frame
@@ -80,7 +82,7 @@ public class SequencerGridTraverser : MonoBehaviour
                 break;
             case Mode.Diagonal:
                 if (currentTick >= totalSteps) currentTick = 0;
-                currentTick += beat * grid.xSize;
+                currentTick += beat * grid.xSize + JumpStepOffset;
                 break;
             case Mode.PingPong:
                 if (currentTick >= totalSteps) pingpongForward = false;

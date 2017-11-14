@@ -55,6 +55,7 @@ public class SequencerGrid : MonoBehaviour {
                 vertices[i] *= scaleFactor;
 
                 grid[i] = Instantiate(Pad, vertices[i], Quaternion.identity, transform);
+                grid[i].name = "Pad" + i;
 
                 steps[i] = grid[i].AddComponent<SequencerStep>();
                 steps[i].stepNumber = i;

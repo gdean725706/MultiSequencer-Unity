@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -95,22 +93,23 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
-    <Compile Include="Assets\Scripts\ballController.cs" />
-    <Compile Include="Assets\Scripts\BallGenerator.cs" />
-    <Compile Include="Assets\Scripts\BPMTimer.cs" />
-    <Compile Include="Assets\Scripts\BulletController.cs" />
-    <Compile Include="Assets\Scripts\ExtendedFlycam.cs" />
-    <Compile Include="Assets\Scripts\FilterRead.cs" />
-    <Compile Include="Assets\Scripts\SequencerGrid.cs" />
-    <Compile Include="Assets\Scripts\GunController.cs" />
-    <Compile Include="Assets\Scripts\NoiseGenerator.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\SequencerGridTraverser.cs" />
-    <Compile Include="Assets\Scripts\SequencerLine.cs" />
-    <Compile Include="Assets\Scripts\SequencerPad.cs" />
-    <Compile Include="Assets\Scripts\SequencerStep.cs" />
-    <Compile Include="Assets\Scripts\SineGenerator.cs" />
-    <Compile Include="Assets\Scripts\WallController.cs" />
+    <Compile Include="Assets\Scripts\BallDemo\ballController.cs" />
+    <Compile Include="Assets\Scripts\BallDemo\BallGenerator.cs" />
+    <Compile Include="Assets\Scripts\BallDemo\BulletController.cs" />
+    <Compile Include="Assets\Scripts\BallDemo\WallController.cs" />
+    <Compile Include="Assets\Scripts\Player\ExtendedFlycam.cs" />
+    <Compile Include="Assets\Scripts\Player\GunController.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\ProceduralAudio\FilterRead.cs" />
+    <Compile Include="Assets\Scripts\ProceduralAudio\NoiseGenerator.cs" />
+    <Compile Include="Assets\Scripts\ProceduralAudio\SineGenerator.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\BPMTimer.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\SequencerGrid.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\SequencerGridTraverser.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\SequencerLine.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\SequencerPad.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\SequencerStep.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\StepBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />

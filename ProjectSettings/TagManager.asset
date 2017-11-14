@@ -7,6 +7,8 @@ TagManager:
   - Ball
   - Bullet
   - Wall
+  - Block
+  - Pads
   layers:
   - Default
   - TransparentFX
@@ -17,9 +19,9 @@ TagManager:
   - 
   - 
   - Bullet
-  - 
-  - 
-  - 
+  - Pads
+  - Floor
+  - Block
   - 
   - 
   - 
