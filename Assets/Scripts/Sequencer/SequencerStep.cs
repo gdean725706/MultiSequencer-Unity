@@ -74,7 +74,7 @@ public class SequencerStep : MonoBehaviour {
 
     void beatStep(int beat)
     {
-        if (Active)
+        if (Active && CurrentStep)
         {
             if (stepOccurred != null)
                 stepOccurred(stepNumber);
