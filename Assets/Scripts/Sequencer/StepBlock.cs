@@ -31,14 +31,6 @@ public class StepBlock : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        //if (other.CompareTag("Pads"))
-        //{
-        //    var obj = other.gameObject.GetComponent<SequencerStep>();
-        //}
-    }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Pads"))
