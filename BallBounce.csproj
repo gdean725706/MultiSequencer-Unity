@@ -108,7 +108,6 @@
     <Compile Include="Assets\Scripts\Sequencer\SequencerGridTraverser.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerLine.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerPad.cs" />
-    <Compile Include="Assets\Scripts\Sequencer\SequencerStep.cs" />
     <Compile Include="Assets\Scripts\Sequencer\StepBlock.cs" />
   </ItemGroup>
   <ItemGroup>

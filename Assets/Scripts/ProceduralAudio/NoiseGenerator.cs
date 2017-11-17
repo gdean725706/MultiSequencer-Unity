@@ -45,24 +45,29 @@ public class NoiseGenerator : MonoBehaviour
         return (((randomSeed >> 16) ^ randomSeed) & 0x7FFFFFFF) * scale;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        var rb = GetComponent<Rigidbody>();
-        impactVelocity = rb.mass * collision.relativeVelocity.magnitude * collision.relativeVelocity.magnitude;
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    var rb = GetComponent<Rigidbody>();
+    //    impactVelocity = rb.mass * collision.relativeVelocity.magnitude * collision.relativeVelocity.magnitude;
 
-        collided = true;
+    //    collided = true;
 
-        if (amp < 0.1f)
-            randomFilterSeed = Random.Range(20000f, 80000f);
+    //    if (amp < 0.1f)
+    //        randomFilterSeed = Random.Range(20000f, 80000f);
 
-        NoiseMixer.SetFloat("RandomSeed", randomFilterSeed);
+    //    NoiseMixer.SetFloat("RandomSeed", randomFilterSeed);
 
-        Debug.Log("Collision with velocity " + impactVelocity + ". Last velocity = " + lastImpactVelocity);
-    }
+    //    Debug.Log("Collision with velocity " + impactVelocity + ". Last velocity = " + lastImpactVelocity);
+    //}
 
     private void OnCollisionStay(Collision collision)
     {
         
+    }
+
+    public void Ping()
+    {
+        amp = 0.98f;
     }
 
     private void OnAudioFilterRead(float[] data, int channels)
@@ -71,17 +76,20 @@ public class NoiseGenerator : MonoBehaviour
         if (sampleRate == 0)
             return;
 
-        if (collided)
-        {
-           amp = impactAmplitude;
-           collided = false;
-        }
+        //if (collided)
+        //{
+        //   amp = impactAmplitude;
+        //   collided = false;
+        //}
 
         if (amp > 0)
-            Mathf.Clamp(amp *= impactAmplitude, 0f, 1f);
+            Mathf.Clamp(amp *= 0.9f, 0f, 1f);
 
         if (amp < 0.0001f)
+        {
             amp = 0f;
+            return;
+        }
 
         for (int j = 0; j < data.Length; j += channels)
         {
@@ -91,6 +99,6 @@ public class NoiseGenerator : MonoBehaviour
                 data[j + i] += t * amp ;
         }
 
-        lastImpactVelocity = impactVelocity;
+        //lastImpactVelocity = impactVelocity;
     }
 }

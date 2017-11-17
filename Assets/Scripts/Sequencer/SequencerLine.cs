@@ -56,7 +56,7 @@ public class SequencerLine : MonoBehaviour {
 
         for (int i = 0; i < NumberOfSteps; ++i)
         {
-            Steps[i].GetComponent<SequencerStep>().CurrentStep = (Clock.GetBeat() % NumberOfSteps == i);
+            Steps[i].GetComponent<SequencerPad>().CurrentStep = (Clock.GetBeat() % NumberOfSteps == i);
         }
 	}
 
@@ -79,7 +79,7 @@ public class SequencerLine : MonoBehaviour {
             audio.spatialBlend = 1f;
             audio.loop = true;
 
-            steps[i].AddComponent<SequencerStep>();
+            steps[i].AddComponent<SequencerPad>();
             Renderer rend = steps[i].GetComponent<Renderer>();
             rend.material = new Material(Shader.Find("Standard"));
         }

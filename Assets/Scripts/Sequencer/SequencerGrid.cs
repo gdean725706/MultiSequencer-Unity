@@ -17,11 +17,11 @@ public class SequencerGrid : MonoBehaviour {
 
     private Vector3[] vertices = new Vector3[0];
     private GameObject[] grid;
-    private SequencerStep[] steps;
+    private SequencerPad[] steps;
     private Mesh mesh;
     private BPMTimer clock;
     
-    public SequencerStep[] mainGrid { get { return steps; } }
+    public SequencerPad[] mainGrid { get { return steps; } }
 
 	// Use this for initialization
 	void Awake ()
@@ -45,7 +45,7 @@ public class SequencerGrid : MonoBehaviour {
 
         vertices = new Vector3[(xSize) * (ySize)];
         grid = new GameObject[xSize * ySize];
-        steps = new SequencerStep[xSize * ySize];
+        steps = new SequencerPad[xSize * ySize];
 
         for (int x = 0, i = 0; x < xSize; ++x)
         {
@@ -57,8 +57,8 @@ public class SequencerGrid : MonoBehaviour {
                 grid[i] = Instantiate(Pad, vertices[i], Quaternion.identity, transform);
                 grid[i].name = "Pad" + i;
 
-                steps[i] = grid[i].AddComponent<SequencerStep>();
-                steps[i].stepNumber = i;
+                steps[i] = grid[i].AddComponent<SequencerPad>();
+                steps[i].padNumber = i;
             }
         }
 
@@ -73,7 +73,7 @@ public class SequencerGrid : MonoBehaviour {
         }
     }
 
-    public SequencerStep GetPad(int padNumber)
+    public SequencerPad GetPad(int padNumber)
     {
         if (padNumber >= steps.Length || padNumber <= 0)
         {
