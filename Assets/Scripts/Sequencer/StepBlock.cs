@@ -19,13 +19,25 @@ public class StepBlock : MonoBehaviour
 
     private float amp = 0;
 
+    public enum Sound
+    {
+        Noise,
+        Kick
+    }
+
+    public Sound SoundType = Sound.Noise;
+
     private NoiseGenerator noise;
+    private SineGenerator kick;
+
+    private 
 
     // Use this for initialization
     void Start()
     {
         rend = GetComponent<Renderer>();
         noise = gameObject.AddComponent<NoiseGenerator>();
+        kick = gameObject.AddComponent<SineGenerator>();
     }
 
     // Update is called once per frame
@@ -64,7 +76,15 @@ public class StepBlock : MonoBehaviour
     // -- Called from Audio Thread -- 
     void playStepSound(int stepNumber)
     {
-        noise.Ping();
+        switch (SoundType)
+        {
+            case Sound.Kick:
+                kick.Ping();
+                break;
+            case Sound.Noise:
+                noise.Ping();
+                break;
+        }
     }
 
     public void DestroyStep()
