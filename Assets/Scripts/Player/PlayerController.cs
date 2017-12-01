@@ -12,12 +12,16 @@ public class PlayerController : MonoBehaviour
     private float spawnDistance = 1;
 
     private Stack<GameObject> spawnedSteps = new Stack<GameObject>();
-    private Transform player;
+
+    public bool write = false;
+    public bool noWrite = true;
+
+    public Transform player;
 
 	// Use this for initialization
 	void Start ()
     {
-        player = transform.GetChild(0);
+        player = transform;
 	}
 	
 	// Update is called once per frame
@@ -43,10 +47,32 @@ public class PlayerController : MonoBehaviour
                 remove.GetComponent<StepBlock>().DestroyStep();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            write = !write;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            noWrite = !noWrite;
+        }
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Pads"))
+        {
+            var pad = other.gameObject.GetComponent<SequencerPad>();
+            if (!noWrite)
+                pad.State = write ? 1 : 0;
+        }
+    }
 
     private void OnGUI()
     {
         
     }
+
+
 }

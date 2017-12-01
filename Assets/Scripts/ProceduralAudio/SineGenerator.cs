@@ -10,7 +10,9 @@ public class SineGenerator : MonoBehaviour {
     public float Amp = 0f;
     public float KickStartFrequency = 167f;
     public float KickEndFrequency = 20f;
+    [Range(0f, 1f)]
     public float KickDecayRate = 0.93f;
+    [Range(0f, 1f)]
     public float AmpDecayRate = 0.95f;
 
     private float frequency = 440f;
@@ -58,13 +60,13 @@ public class SineGenerator : MonoBehaviour {
         if (Amp > 0f)
             Amp *= AmpDecayRate;
 
-        if (decay < 0.00001f)
+        if (decay < 0.0001f)
         {
             decay = 0f;
             return;
         }
 
-        if (Amp < 0.00001f)
+        if (Amp < 0.0001f)
         {
             Amp = 0f;
             return;

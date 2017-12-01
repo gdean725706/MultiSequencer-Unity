@@ -21,11 +21,15 @@ public class StepBlock : MonoBehaviour
 
     public enum Sound
     {
-        Noise,
+        Hat,
         Kick
     }
 
-    public Sound SoundType = Sound.Noise;
+    public Sound SoundType = Sound.Hat;
+
+    [Range(0f, 1f)]
+    public float HatDecay = 0.8f;
+    private float prevHatDecay;
 
     private NoiseGenerator noise;
     private SineGenerator kick;
@@ -43,6 +47,11 @@ public class StepBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (HatDecay != prevHatDecay)
+        {
+            noise.AmpDecayTime = HatDecay;
+        }
+        prevHatDecay = HatDecay;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -81,7 +90,7 @@ public class StepBlock : MonoBehaviour
             case Sound.Kick:
                 kick.Ping();
                 break;
-            case Sound.Noise:
+            case Sound.Hat:
                 noise.Ping();
                 break;
         }

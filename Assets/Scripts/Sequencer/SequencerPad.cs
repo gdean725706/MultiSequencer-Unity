@@ -11,6 +11,9 @@ public class SequencerPad : MonoBehaviour {
     public bool CurrentStep = false;
 
     [SerializeField]
+    public int State = 0;
+
+    [SerializeField]
     private float DefaultAmp = 0.99f;
 
     public int padNumber = 0;
@@ -20,6 +23,7 @@ public class SequencerPad : MonoBehaviour {
 
     private Color colorOff = new Color(1f, 1f, 1f, 0.05f);
     private Color colorCurrentStep = new Color(0f,1f,0f, 0.2f);
+    private Color colorAlive = new Color(0f, 0f, 1f, 0.2f);
     private Color colorActive = new Color(1f, 0f, 0f, 0.2f);
 
     public delegate void PlayStep(int stepNumber);
@@ -42,6 +46,10 @@ public class SequencerPad : MonoBehaviour {
             rend.material.SetColor("_Color", colorCurrentStep);
             amp = DefaultAmp;
         }
+        else if (State == 1)
+        {
+            rend.material.SetColor("_Color", colorAlive);
+        }
         else
         {
             Color col = Active ? colorActive : colorOff;
@@ -59,6 +67,11 @@ public class SequencerPad : MonoBehaviour {
     void beatStep(int beat)
     {
         if (Active && CurrentStep)
+        {
+            if (stepOccurred != null)
+                stepOccurred(padNumber);
+        }
+        else if (Active && State == 1 && GameOfLife.running)
         {
             if (stepOccurred != null)
                 stepOccurred(padNumber);

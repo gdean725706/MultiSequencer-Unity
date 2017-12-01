@@ -6,6 +6,8 @@ using UnityEngine.Audio;
 [RequireComponent(typeof(AudioSource))]
 public class NoiseGenerator : MonoBehaviour
 {
+    [Range(0f, 1f)]
+    public float AmpDecayTime = 0.95f;
 
     private float lastImpactVelocity = 0f;
     private float impactVelocity = 0f;
@@ -45,20 +47,27 @@ public class NoiseGenerator : MonoBehaviour
         return (((randomSeed >> 16) ^ randomSeed) & 0x7FFFFFFF) * scale;
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    var rb = GetComponent<Rigidbody>();
-    //    impactVelocity = rb.mass * collision.relativeVelocity.magnitude * collision.relativeVelocity.magnitude;
+    private void OnCollisionEnter(Collision collision)
+    {
+        //RandomisedModal(collision);
+    }
 
-    //    collided = true;
+    // Requires linked modal filter in mixer hierararchy
+    void RandomisedModal(Collision collision)
+    {
+        var rb = GetComponent<Rigidbody>();
+        impactVelocity = rb.mass * collision.relativeVelocity.magnitude * collision.relativeVelocity.magnitude;
 
-    //    if (amp < 0.1f)
-    //        randomFilterSeed = Random.Range(20000f, 80000f);
+        collided = true;
 
-    //    NoiseMixer.SetFloat("RandomSeed", randomFilterSeed);
+        if (amp < 0.1f)
+            randomFilterSeed = Random.Range(20000f, 80000f);
 
-    //    Debug.Log("Collision with velocity " + impactVelocity + ". Last velocity = " + lastImpactVelocity);
-    //}
+        NoiseMixer.SetFloat("RandomSeed", randomFilterSeed);
+
+        Debug.Log("Collision with velocity " + impactVelocity + ". Last velocity = " + lastImpactVelocity);
+
+    }
 
     private void OnCollisionStay(Collision collision)
     {
@@ -67,7 +76,7 @@ public class NoiseGenerator : MonoBehaviour
 
     public void Ping()
     {
-        amp = 0.98f;
+        amp = 0.99f;
     }
 
     private void OnAudioFilterRead(float[] data, int channels)
@@ -83,7 +92,7 @@ public class NoiseGenerator : MonoBehaviour
         //}
 
         if (amp > 0)
-            Mathf.Clamp(amp *= 0.9f, 0f, 1f);
+            amp *= AmpDecayTime;
 
         if (amp < 0.0001f)
         {
