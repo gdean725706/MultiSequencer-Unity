@@ -66,11 +66,11 @@ namespace Assets.Scripts.ProceduralAudio
     /// Specify size in constructor
     /// 512 is good
     /// </summary>
-    public class Wavetables
+    public class Wavetable
     {
         private double[] m_table;
 
-        public Wavetables(int size)
+        public Wavetable(int size)
         {
             m_table = new double[size];
             CreateSquare();

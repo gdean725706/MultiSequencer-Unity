@@ -22,13 +22,15 @@ public class SineGenerator : MonoBehaviour {
     private const float DOUBLE_PI = 6.28318530718f;
     private float st;
 
-    private Wavetables m_shape = new Wavetables(512);
+    private Wavetable m_square = new Wavetable(512);
+    private Wavetable m_sine = new Wavetable(512);
     private Phasor m_phasor;
 
     private void Awake()
     {
         m_phasor = new Phasor(AudioSettings.outputSampleRate, 440.0f, 0f);
-        m_shape.CreateSquare();
+        m_square.CreateSquare();
+        m_sine.CreateSine();
     }
 
     // Use this for initialization
@@ -86,6 +88,8 @@ public class SineGenerator : MonoBehaviour {
 
         m_phasor.SetFrequency(frequency);
         float v = 0f;
+        float s = 0f;
+        float mix = 0f;
 
         float f = frequency * st;
         for (int j = 0; j < data.Length; j += channels)
@@ -96,8 +100,10 @@ public class SineGenerator : MonoBehaviour {
             
             for (int i = 0; i < channels; i++)
             {
-                v = (float)m_shape.LinearLookup(m_phasor.GetPhase() * m_shape.GetSize()) * Amp;
-                data[j + i] = v;
+                v = (float)m_square.LinearLookup(m_phasor.GetPhase() * m_square.GetSize()) * Amp;
+                s = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
+                mix = v *= s;
+                data[j + i] = mix;
                 m_phasor.Tick();
             }
         }

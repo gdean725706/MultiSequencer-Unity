@@ -4420,7 +4420,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
-  running: 0
 --- !u!4 &1828334046 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4194009670656310, guid: 696f78924ca0a2d4f8f76a2070daa87f,
@@ -4553,11 +4552,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 23060689244468296, guid: 74dd0b0471aea6748a764551cf2a8737,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b00dda8308eb49548a979f6a0c07f71e, type: 2}
     - target: {fileID: 1689210624235972, guid: 74dd0b0471aea6748a764551cf2a8737, type: 2}
       propertyPath: m_IsActive
       value: 0

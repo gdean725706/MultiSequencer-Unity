@@ -203,3 +203,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   play: 0
+  counter: 0
+  SoundType: 1
+  HatDecay: 0.8
