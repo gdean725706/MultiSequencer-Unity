@@ -102,6 +102,15 @@ namespace Assets.Scripts.ProceduralAudio
             m_table[m_table.Length - 1] = m_table[0];
         }
 
+        public void CreateNoise()
+        {
+            var r = new System.Random();
+            for (int i = 0; i < m_table.Length; ++i)
+            {
+                m_table[i] = ((r.Next(0, 1000000) * 0.000001) * 2.0f) - 1.0f;
+            }
+        }
+
         public double At(int index)
         {
             return m_table[index];

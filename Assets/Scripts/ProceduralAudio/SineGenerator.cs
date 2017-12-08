@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.ProceduralAudio;
-
+// this is actually a drum voice now
 public class SineGenerator : MonoBehaviour {
 
     private AudioSource audioSource;
@@ -16,21 +16,32 @@ public class SineGenerator : MonoBehaviour {
     [Range(0f, 1f)]
     public float AmpDecayRate = 0.95f;
 
+    [Range(0f, 0.5f)]
+    public float FMAmount = 0f;
+
     private float frequency = 440f;
     private float decay = 1.0f;
     private float phase;
     private const float DOUBLE_PI = 6.28318530718f;
     private float st;
 
+    private static ulong randomSeed;
+
     private Wavetable m_square = new Wavetable(512);
     private Wavetable m_sine = new Wavetable(512);
+    private Wavetable m_sineFM = new Wavetable(512);
+
     private Phasor m_phasor;
+    private Phasor m_fmPhasor;
 
     private void Awake()
     {
         m_phasor = new Phasor(AudioSettings.outputSampleRate, 440.0f, 0f);
+        m_fmPhasor = new Phasor(AudioSettings.outputSampleRate, 2000.0f, 0f);
         m_square.CreateSquare();
         m_sine.CreateSine();
+        m_sineFM.CreateSine();
+        m_fmPhasor.SetFrequency(2000f);
     }
 
     // Use this for initialization
@@ -43,9 +54,17 @@ public class SineGenerator : MonoBehaviour {
         st = 1.0f / AudioSettings.outputSampleRate;
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Linear-feedback shift register pseudorandom number generator
+    float GetRandom()
+    {
+        const float scale = 1.0f / (float)0x7FFFFFFF;
+        randomSeed = randomSeed * 69069 + 1;
+        return (((randomSeed >> 16) ^ randomSeed) & 0x7FFFFFFF) * scale;
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -89,22 +108,30 @@ public class SineGenerator : MonoBehaviour {
         m_phasor.SetFrequency(frequency);
         float v = 0f;
         float s = 0f;
+        float fm = 0f;
         float mix = 0f;
+
+        float noise_fm = 0f;
+        float fm_mix = 0f;
 
         float f = frequency * st;
         for (int j = 0; j < data.Length; j += channels)
-        {
-            //float t = Mathf.Sin(DOUBLE_PI * phase) * Amp;
-            //phase += f;
-            //phase -= Mathf.Floor(phase);
-            
+        {   
             for (int i = 0; i < channels; i++)
             {
+                fm = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
+
+                frequency += (fm * FMAmount);
+                m_phasor.SetFrequency(frequency);
                 v = (float)m_square.LinearLookup(m_phasor.GetPhase() * m_square.GetSize()) * Amp;
-                s = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
-                mix = v *= s;
+                //s = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
+
+                mix = v;//
+                
+
                 data[j + i] = mix;
                 m_phasor.Tick();
+                m_fmPhasor.Tick();
             }
         }
     }
