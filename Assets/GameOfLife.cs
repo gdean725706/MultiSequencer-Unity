@@ -60,6 +60,11 @@ public class GameOfLife : MonoBehaviour
             running = !running;
         }
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            clearCells();
+        }
+
     }
 
 
