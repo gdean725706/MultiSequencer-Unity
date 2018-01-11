@@ -12,6 +12,9 @@ public class SequencerPad : MonoBehaviour {
 
     [SerializeField]
     public int State = 0;
+    private int prevState = 0;
+
+    public float GOLTimeAlive = 0f;
 
     [SerializeField]
     private float DefaultAmp = 0.99f;
@@ -56,6 +59,17 @@ public class SequencerPad : MonoBehaviour {
             amp *= amp;
             rend.material.SetColor("_Color", col);
         }
+        
+        if (State == 0 && prevState == 1)
+        {
+            GOLTimeAlive = 0;
+        }
+        else if (State == 1)
+        {
+            ++GOLTimeAlive;
+        }
+
+        prevState = State;
     }
 
     private void OnTriggerStay(Collider other)

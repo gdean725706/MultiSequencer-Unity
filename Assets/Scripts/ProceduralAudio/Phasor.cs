@@ -17,6 +17,9 @@ namespace Assets.Scripts.ProceduralAudio
         public float _freq = 0f;
         public bool _firstTimeIn = false;
 
+       /// <summary>
+       /// Create a phasor with a set sample rate, frequency (Hz) and initial phase value.
+       /// </summary>
         public Phasor(float sampleRate = 44100f, float frequency = 1f, float phase = 0f)
         {
             _phase = phase;
@@ -25,27 +28,47 @@ namespace Assets.Scripts.ProceduralAudio
             _firstTimeIn = true;
         }
 
+        /// <summary>
+        /// Returns the current frequency in Hz that the phasor is playing back at
+        /// </summary>
+        /// <returns></returns>
         public float GetFrequency()
         {
             return _freq;
         }
 
+        /// <summary>
+        /// Sets the frequency in Hz for the phasor to play back at
+        /// </summary>
+        /// <param name="frequency"></param>
         public void SetFrequency(float frequency)
         {
             _freq = frequency;
             _delta = frequency / _sr;
         }
 
+        /// <summary>
+        /// Returns current phase value
+        /// </summary>
+        /// <returns></returns>
         public float GetPhase()
         {
             return _phase;
         }
 
+        /// <summary>
+        /// Manually set the phase position
+        /// </summary>
+        /// <param name="phase"></param>
         public void SetPhase(float phase)
         {
             _phase = phase;
         }
 
+        /// <summary>
+        /// Increment phasor by delta value.
+        /// Must be called after each frame read.
+        /// </summary>
         public void Tick()
         {
             _phase += _delta;
@@ -70,6 +93,11 @@ namespace Assets.Scripts.ProceduralAudio
     {
         private double[] m_table;
 
+        /// <summary>
+        /// Initialise a wavetable with a set size. 512 would be a good default size.
+        /// Call any of the Create methods to fill the table with a chosen waveform.
+        /// </summary>
+        /// <param name="size"></param>
         public Wavetable(int size)
         {
             m_table = new double[size];
@@ -122,7 +150,8 @@ namespace Assets.Scripts.ProceduralAudio
         {
             int aIndex, bIndex;
             double r, va, vb;
-            r = index % 1;
+            // Splitting the float into integer and decimal parts
+            r = index % 1; 
             aIndex = (int)index;
             bIndex = aIndex + 1;
             va = m_table[aIndex];

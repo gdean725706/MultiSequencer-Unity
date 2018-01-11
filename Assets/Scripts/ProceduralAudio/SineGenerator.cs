@@ -27,12 +27,19 @@ public class SineGenerator : MonoBehaviour {
 
     private static ulong randomSeed;
 
-    private Wavetable m_square = new Wavetable(512);
-    private Wavetable m_sine = new Wavetable(512);
-    private Wavetable m_sineFM = new Wavetable(512);
+    private Wavetable m_square = new Wavetable(1024);
+    private Wavetable m_sine = new Wavetable(1024);
+    private Wavetable m_sineFM = new Wavetable(1024);
 
     private Phasor m_phasor;
     private Phasor m_fmPhasor;
+
+    [Range(0f, 1f)]
+    public float ModulationAmountMultiplier = 0f;
+
+    [Range(0f, 1f)]
+    public float SineSquareMix = 0.5f;
+
 
     private void Awake()
     {
@@ -41,7 +48,7 @@ public class SineGenerator : MonoBehaviour {
         m_square.CreateSquare();
         m_sine.CreateSine();
         m_sineFM.CreateSine();
-        m_fmPhasor.SetFrequency(2000f);
+        m_fmPhasor.SetFrequency(4000f);
     }
 
     // Use this for initialization
@@ -54,6 +61,13 @@ public class SineGenerator : MonoBehaviour {
         st = 1.0f / AudioSettings.outputSampleRate;
 
 	}
+
+    public void ApplyModulation(float amount)
+    {
+
+        //KickDecayRate += scaleRange(amount, 0, 1000, amount * ModulationAmountMultiplier;
+        AmpDecayRate += amount * ModulationAmountMultiplier;
+    }
 
     // Linear-feedback shift register pseudorandom number generator
     float GetRandom()
@@ -91,14 +105,9 @@ public class SineGenerator : MonoBehaviour {
         if (Amp > 0f)
             Amp *= AmpDecayRate;
 
-        if (decay < 0.0001f)
+        if (decay < 0.0001f && Amp < 0.0001f)
         {
             decay = 0f;
-            return;
-        }
-
-        if (Amp < 0.0001f)
-        {
             Amp = 0f;
             return;
         }
@@ -106,8 +115,8 @@ public class SineGenerator : MonoBehaviour {
         frequency = scaleRange(decay, 1, 0, KickStartFrequency, KickEndFrequency);
 
         m_phasor.SetFrequency(frequency);
-        float v = 0f;
-        float s = 0f;
+        float sq = 0f;
+        float sin = 0f;
         float fm = 0f;
         float mix = 0f;
 
@@ -119,19 +128,27 @@ public class SineGenerator : MonoBehaviour {
         {   
             for (int i = 0; i < channels; i++)
             {
-                fm = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
+                if (FMAmount != 0)
+                {
+                    fm = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
 
-                frequency += (fm * FMAmount);
+                    frequency += (fm * FMAmount);
+
+                    m_fmPhasor.Tick();
+                }
+
                 m_phasor.SetFrequency(frequency);
-                v = (float)m_square.LinearLookup(m_phasor.GetPhase() * m_square.GetSize()) * Amp;
-                //s = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
+                sq = (float)m_square.LinearLookup(m_phasor.GetPhase() * m_square.GetSize()) * Amp;
+                sin = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
 
-                mix = v;//
-                
+                // Mix sine square
+                mix = (sin * (1 - SineSquareMix)) + (sq * SineSquareMix);
+
 
                 data[j + i] = mix;
                 m_phasor.Tick();
-                m_fmPhasor.Tick();
+                
+
             }
         }
     }

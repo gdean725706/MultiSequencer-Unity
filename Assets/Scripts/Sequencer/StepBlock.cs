@@ -31,17 +31,26 @@ public class StepBlock : MonoBehaviour
     public float HatDecay = 0.8f;
     private float prevHatDecay;
 
+    public GameObject DrumVoiceSource;
+
     private NoiseGenerator noise;
     private SineGenerator kick;
 
-    private 
+    public float assocPadAliveSum = 0f;
+    public bool GOLLifetimeModulation = false;
+    
 
     // Use this for initialization
     void Start()
     {
+        if (DrumVoiceSource == null)
+        {
+            DrumVoiceSource = GameObject.Find("DrumVoices");
+        }
         rend = GetComponent<Renderer>();
-        noise = gameObject.AddComponent<NoiseGenerator>();
-        kick = gameObject.AddComponent<SineGenerator>();
+
+        noise = DrumVoiceSource.GetComponentInChildren<NoiseGenerator>();
+        kick = DrumVoiceSource.GetComponentInChildren<SineGenerator>();
     }
 
     // Update is called once per frame
@@ -52,6 +61,18 @@ public class StepBlock : MonoBehaviour
             noise.AmpDecayTime = HatDecay;
         }
         prevHatDecay = HatDecay;
+
+        if (GOLLifetimeModulation)
+        {
+            float padAliveTime = 0;
+
+            foreach (var pad in associatedPads)
+            {
+                padAliveTime += pad.GOLTimeAlive;
+            }
+
+            assocPadAliveSum = padAliveTime;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -105,5 +126,4 @@ public class StepBlock : MonoBehaviour
         associatedPads.Clear();
         Destroy(gameObject);
     }
-
 }

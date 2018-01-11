@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Block
   - Pads
+  - DrumVoice
   layers:
   - Default
   - TransparentFX
