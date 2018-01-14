@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for the pad that sequencer blocks sit on
+/// Handles colours and passes on active step triggering to the relevant voice
+/// </summary>
 public class SequencerPad : MonoBehaviour {
 
     [SerializeField]
@@ -38,7 +42,8 @@ public class SequencerPad : MonoBehaviour {
 
         rend = transform.GetChild(0).GetComponent<Renderer>();
 
-        BPMTimer.beatOccurred += beatStep;
+        // Add stepHanlder to BPM Timer delegate
+        BPMTimer.stepOccurred += stepHandler;
 	}
 
     // Update is called once per frame
@@ -78,7 +83,8 @@ public class SequencerPad : MonoBehaviour {
          //   Debug.Log(gameObject.name + " " + other.gameObject.name);
     }
 
-    void beatStep(int beat)
+    // Called from clock source each step
+    void stepHandler(int step)
     {
         if (Active && CurrentStep)
         {

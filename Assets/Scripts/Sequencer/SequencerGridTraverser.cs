@@ -42,7 +42,7 @@ public class SequencerGridTraverser : MonoBehaviour
         grid = GameObject.Find("SequencerGrid").GetComponent<SequencerGrid>();
         clock = GameObject.Find("Timer").GetComponent<BPMTimer>();
 
-        BPMTimer.beatOccurred += incrementBeat;
+        BPMTimer.stepOccurred += incrementBeat;
 
         totalSteps = (grid.xSize * grid.ySize);
 

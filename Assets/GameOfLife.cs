@@ -34,7 +34,7 @@ public class GameOfLife : MonoBehaviour
             }
         }
 
-        BPMTimer.beatOccurred += incrementBeat;
+        BPMTimer.stepOccurred += incrementBeat;
 
         clearCells();
 	}
