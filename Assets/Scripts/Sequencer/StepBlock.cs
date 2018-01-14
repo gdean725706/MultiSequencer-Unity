@@ -34,7 +34,7 @@ public class StepBlock : MonoBehaviour
     public GameObject DrumVoiceSource;
 
     private NoiseGenerator noise;
-    private SineGenerator kick;
+    private DrumVoice kick;
 
     public float assocPadAliveSum = 0f;
     public bool GOLLifetimeModulation = false;
@@ -50,7 +50,7 @@ public class StepBlock : MonoBehaviour
         rend = GetComponent<Renderer>();
 
         noise = DrumVoiceSource.GetComponentInChildren<NoiseGenerator>();
-        kick = DrumVoiceSource.GetComponentInChildren<SineGenerator>();
+        kick = DrumVoiceSource.GetComponentInChildren<DrumVoice>();
     }
 
     // Update is called once per frame

@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -87,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Arkham Interactive\Industrial\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
-    <Compile Include="Assets\GameOfLife.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\SceneAndURLLoader.cs" />
@@ -107,8 +104,8 @@
     <Compile Include="Assets\Scripts\ProceduralAudio\FilterRead.cs" />
     <Compile Include="Assets\Scripts\ProceduralAudio\NoiseGenerator.cs" />
     <Compile Include="Assets\Scripts\ProceduralAudio\Phasor.cs" />
-    <Compile Include="Assets\Scripts\ProceduralAudio\SineGenerator.cs" />
     <Compile Include="Assets\Scripts\Sequencer\BPMTimer.cs" />
+    <Compile Include="Assets\Scripts\Sequencer\GameOfLife.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerGrid.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerGridTraverser.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerLine.cs" />
