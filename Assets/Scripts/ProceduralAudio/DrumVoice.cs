@@ -4,7 +4,7 @@ using UnityEngine;
 using Assets.Scripts.ProceduralAudio;
 
 /// <summary>
-/// Drum voice
+/// Wavetable Drum voice
 /// </summary>
 public class DrumVoice : MonoBehaviour {
 
@@ -31,12 +31,11 @@ public class DrumVoice : MonoBehaviour {
 
     private static ulong randomSeed;
 
-    // Create wavetables for the components of the voice
+    // Create wavetables & phasors for the components of the voice
     private Wavetable m_square = new Wavetable(1024);
     private Wavetable m_sine = new Wavetable(1024);
     private Wavetable m_sineFM = new Wavetable(1024);
 
-    // Create phasors to read them back
     private Phasor m_phasor;
     private Phasor m_fmPhasor;
 
