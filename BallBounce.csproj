@@ -93,6 +93,7 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
+    <Compile Include="Assets\SampleSelectSlider.cs" />
     <Compile Include="Assets\Scripts\BallDemo\ballController.cs" />
     <Compile Include="Assets\Scripts\BallDemo\BallGenerator.cs" />
     <Compile Include="Assets\Scripts\BallDemo\BulletController.cs" />
@@ -111,6 +112,8 @@
     <Compile Include="Assets\Scripts\Sequencer\SequencerLine.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerPad.cs" />
     <Compile Include="Assets\Scripts\Sequencer\StepBlock.cs" />
+    <Compile Include="Assets\Scripts\UI\SampleSelectDropdown.cs" />
+    <Compile Include="Assets\Scripts\UI\TextSliderValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />

@@ -18,23 +18,55 @@ public class PlayerController : MonoBehaviour
 
     public Transform player;
 
+    public Camera PlayerCamera;
+    public Camera SceneCamera;
+
+    public SampleSelectDropdown SelectDropdown;
+    public SampleSelectSlider SelectSlider;
+
+    private enum ActiveCamera
+    {
+        Player = 0,
+        Scene = 1
+    }
+
+    private ActiveCamera activeCam = 0;
+
+    private bool sceneCamActive = false;
+    private int spawned = 0;
+
 	// Use this for initialization
 	void Start ()
     {
         player = transform;
+
+        // Find Cameras
+        if (PlayerCamera == null)
+            PlayerCamera = GetComponentInChildren<Camera>();
+
+        if (SceneCamera == null)
+            SceneCamera = GameObject.Find("SceneCamera").GetComponent<Camera>();
+
+
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
         // Spawn cube
-		if (Input.GetKeyDown(KeyCode.K))
+		if (Input.GetKeyDown(KeyCode.C))
         {
             if (StepBlockPrefab != null)
             {
                 Vector3 spawnPos = player.position + player.forward * spawnDistance;
                 var obj = Instantiate(StepBlockPrefab, spawnPos, player.rotation, StepBlockSpawnParent);
+                spawned++;
+                obj.name = obj.name + spawned;
                 spawnedSteps.Push(obj);
+
+                // Update UI
+                SelectDropdown.AddStep(obj);
+                SelectSlider.AddStep(obj);
             }
         }
 
@@ -45,6 +77,8 @@ public class PlayerController : MonoBehaviour
             {
                 var remove = spawnedSteps.Pop();
                 remove.GetComponent<StepBlock>().DestroyStep();
+                spawned--;
+                SelectDropdown.RemoveLastStep();
             }
         }
 
@@ -57,6 +91,14 @@ public class PlayerController : MonoBehaviour
         {
             noWrite = !noWrite;
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            sceneCamActive = !sceneCamActive;
+            SceneCamera.gameObject.SetActive(sceneCamActive);
+            PlayerCamera.gameObject.SetActive(!sceneCamActive);
+        }
+        
 	}
 
     private void OnTriggerEnter(Collider other)

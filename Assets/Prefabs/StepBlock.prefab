@@ -203,6 +203,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   play: 0
+  SampleMode: 1
+  Samples:
+  - {fileID: 8300000, guid: 6f98a1a74f17c044aba3f3a04b9f4afd, type: 3}
+  - {fileID: 8300000, guid: 3f4c27937d3b20b46aba1881e0cc8a15, type: 3}
+  - {fileID: 8300000, guid: b6c6f04c984021547a8c3f2f81042e81, type: 3}
+  - {fileID: 8300000, guid: 7dfbb21daafed984c8c436214c242cf1, type: 3}
+  - {fileID: 8300000, guid: 8273004800a1bb64e9301052e4cfcaf0, type: 3}
+  - {fileID: 8300000, guid: 996aba0a424accc488697aab6109a6f3, type: 3}
+  - {fileID: 8300000, guid: 27b4a8c9e334d16499fd46b5367678ac, type: 3}
+  - {fileID: 8300000, guid: 445d70820fa46d54eaa21ebb4806c1e4, type: 3}
+  - {fileID: 8300000, guid: cf69eee83df41e2438f44078eb6c51dc, type: 3}
+  - {fileID: 8300000, guid: d4ff725a766d3a24bb482cdfa88f5273, type: 3}
+  - {fileID: 8300000, guid: ca2f19beaf1f4044091f55158f6f32c7, type: 3}
+  - {fileID: 8300000, guid: 50e8e44d10a422b41b2659aaeecb7fa3, type: 3}
+  - {fileID: 8300000, guid: 75fed1717b0b30f478dc0e5824a7f446, type: 3}
+  - {fileID: 8300000, guid: e2d5f9bbe593b2a44abdf2876ed93b4b, type: 3}
+  - {fileID: 8300000, guid: 9c6b355a1a604ae47ac7090f03fcfea4, type: 3}
+  - {fileID: 8300000, guid: 9e2443b5973a3d143aa6002419ede586, type: 3}
+  currentSample: 0
   counter: 0
   SoundType: 1
   HatDecay: 0.8
+  DrumVoiceSource: {fileID: 0}
+  assocPadAliveSum: 0
+  GOLLifetimeModulation: 0

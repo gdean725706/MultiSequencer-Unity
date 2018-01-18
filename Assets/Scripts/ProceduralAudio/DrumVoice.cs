@@ -45,7 +45,6 @@ public class DrumVoice : MonoBehaviour {
     [Range(0f, 1f)]
     public float SineSquareMix = 0.5f;
 
-
     private void Awake()
     {
         m_phasor = new Phasor(AudioSettings.outputSampleRate, 440.0f, 0f);

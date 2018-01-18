@@ -39,7 +39,8 @@ public class ExtendedFlycam : MonoBehaviour
 
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.PageUp)) {
+		if (Input.GetKeyDown (KeyCode.Q)) {
+            Screen.lockCursor = !Screen.lockCursor;
 			Disable = !Disable;
 		}
 

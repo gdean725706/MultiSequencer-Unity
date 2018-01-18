@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Clock generator class.
@@ -97,6 +98,10 @@ public class BPMTimer : MonoBehaviour
     }
 #endregion
 
+    public double GetNextStepTick()
+    {
+        return nextStepTick;
+    }
     /// <summary>
     /// Sets the direction of the clock (0 - Forwards (default), 1 - Backwards)
     /// </summary>
@@ -105,6 +110,11 @@ public class BPMTimer : MonoBehaviour
     {
         direction = Mathf.Clamp(dir, 0, 1);
         
+    }
+
+    public void UpdateBPM(float in_bpm)
+    {
+        bpm = Mathf.Clamp(in_bpm, 0, 300);
     }
 
     // Audio thread callback

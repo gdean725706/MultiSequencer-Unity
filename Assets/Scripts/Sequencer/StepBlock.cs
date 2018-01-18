@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 [RequireComponent(typeof(AudioSource))]
 public class StepBlock : MonoBehaviour
 {
-    [SerializeField]
-    bool play = false;
+
+    public bool SampleMode = true;
+
+    public List<AudioClip> Samples = new List<AudioClip>();
+    public int currentSample = 0;
+    private AudioSource audioSource;
 
     private List<SequencerPad> associatedPads = new List<SequencerPad>();
 
@@ -38,11 +40,19 @@ public class StepBlock : MonoBehaviour
 
     public float assocPadAliveSum = 0f;
     public bool GOLLifetimeModulation = false;
-    
+
+    private double nextStepSeconds = 0;
+
+    private BPMTimer timer;
+    private bool playActive = false;
 
     // Use this for initialization
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
+        timer = GameObject.Find("Timer").GetComponent<BPMTimer>();
+
         if (DrumVoiceSource == null)
         {
             DrumVoiceSource = GameObject.Find("DrumVoices");
@@ -51,11 +61,25 @@ public class StepBlock : MonoBehaviour
 
         noise = DrumVoiceSource.GetComponentInChildren<NoiseGenerator>();
         kick = DrumVoiceSource.GetComponentInChildren<DrumVoice>();
+
+        UpdateSample(currentSample = (int)Random.Range(0, Samples.Count));
+
+        if (SampleMode)
+        {
+            audioSource.loop = false;
+            audioSource.playOnAwake = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (playActive)
+        {
+            audioSource.PlayScheduled(nextStepSeconds);
+            playActive = false;
+        }
+
         if (HatDecay != prevHatDecay)
         {
             noise.AmpDecayTime = HatDecay;
@@ -73,6 +97,8 @@ public class StepBlock : MonoBehaviour
 
             assocPadAliveSum = padAliveTime;
         }
+
+        nextStepSeconds = timer.GetNextStepTick() / AudioSettings.outputSampleRate;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -106,6 +132,11 @@ public class StepBlock : MonoBehaviour
     // -- Called from Audio Thread -- 
     void playStepSound(int stepNumber)
     {
+        if (SampleMode)
+        {
+            playActive = true;
+            return;
+        }
         switch (SoundType)
         {
             case Sound.Kick:
@@ -125,5 +156,12 @@ public class StepBlock : MonoBehaviour
         }
         associatedPads.Clear();
         Destroy(gameObject);
+    }
+
+    public void UpdateSample(int sampleNumber)
+    {
+        sampleNumber = Mathf.Clamp(sampleNumber, 0, Samples.Count);
+        audioSource.clip = Samples[sampleNumber];
+        currentSample = sampleNumber;
     }
 }
