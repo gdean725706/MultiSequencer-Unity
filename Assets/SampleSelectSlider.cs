@@ -28,7 +28,7 @@ public class SampleSelectSlider : MonoBehaviour
 
     public void UpdateSample(float number)
     {
-        _spawnedSteps[_currentStep].GetComponent<StepBlock>().currentSample = (int)number;
+        _spawnedSteps[_currentStep].GetComponent<StepBlock>().UpdateSample((int)number);
     }
    
 
