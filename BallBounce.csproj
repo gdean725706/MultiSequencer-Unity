@@ -114,6 +114,9 @@
     <Compile Include="Assets\Scripts\Sequencer\StepBlock.cs" />
     <Compile Include="Assets\Scripts\UI\SampleSelectDropdown.cs" />
     <Compile Include="Assets\Scripts\UI\TextSliderValue.cs" />
+    <Compile Include="Assets\SequencerDirectionDropdown.cs" />
+    <Compile Include="Assets\SequencerSelectDropdown.cs" />
+    <Compile Include="Assets\SequencerToggle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />

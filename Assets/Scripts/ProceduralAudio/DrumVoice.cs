@@ -81,11 +81,6 @@ public class DrumVoice : MonoBehaviour {
         return (((randomSeed >> 16) ^ randomSeed) & 0x7FFFFFFF) * scale;
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
-
     public void Ping()
     {
         Amp = 0.99f;

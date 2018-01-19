@@ -11,10 +11,13 @@ public class SequencerGridTraverser : MonoBehaviour
         Reverse,
         PingPong,
         Diagonal,
-        Brownian
+        Brownian,
+        Random
     }
 
     public Mode SequencerDirection;
+
+    public bool Running = false;
 
     public int JumpStepOffset = 0;
     public int InitialOffset = 0;
@@ -49,11 +52,15 @@ public class SequencerGridTraverser : MonoBehaviour
         awake = true;
 
         currentTick += InitialOffset;
+
+        currentTick = 0;
+        lastTick = 0;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        if (!Running) return;
 
         totalSteps = (grid.xSize * grid.ySize);
 
@@ -62,49 +69,61 @@ public class SequencerGridTraverser : MonoBehaviour
             grid.GetPad(currentTick).CurrentStep = true;
             grid.GetPad(lastTick).CurrentStep = false;
         }
+        
 	}
 
-    void incrementBeat(int beat)
+    void incrementBeat(int beatIn)
     {
         if (!awake) return;
 
+        if (!Running) return;
+        
         lastTick = currentTick;
+        
 
         switch (SequencerDirection)
         {
             case Mode.Forward:
                 if (currentTick >= totalSteps) currentTick = 0;
-                currentTick += beat;
+                currentTick += 1;
                 break;
             case Mode.Reverse:
                 if (currentTick <= 0) currentTick = totalSteps;
-                currentTick -= beat;
+                currentTick -= 1;
                 break;
             case Mode.Diagonal:
                 if (currentTick >= totalSteps) currentTick = 0;
-                currentTick += beat * grid.xSize + JumpStepOffset;
+                currentTick += 1 * grid.xSize + JumpStepOffset;
                 break;
             case Mode.PingPong:
                 if (currentTick >= totalSteps) pingpongForward = false;
                 if (currentTick <= 0) pingpongForward = true;
                 if (pingpongForward)
-                    currentTick += beat;
+                    currentTick += 1;
                 else
-                    currentTick -= beat;
+                    currentTick -= 1;
                 break;
             case Mode.Brownian:
                 if (currentTick >= totalSteps) currentTick = 0;
                 if (currentTick <= 0) currentTick = totalSteps;
                 if (GetRandom() > 0.5f)
-                    currentTick += beat;
+                    currentTick += 1;
                 else
-                    currentTick -= beat;
+                    currentTick -= 1;
+                break;
+            case Mode.Random:
+                if (currentTick >= totalSteps) currentTick = 0;
+                if (currentTick <= 0) currentTick = totalSteps;
+                if (GetRandom() > 0.5f)
+                    currentTick += beatIn % totalSteps;
+                else
+                    currentTick -= beatIn % totalSteps;
                 break;
             default:
-                currentTick += beat;
+                currentTick += 1;
                 break;
         }
-        
+
     }
 
     // Linear-feedback shift register pseudorandom number generator

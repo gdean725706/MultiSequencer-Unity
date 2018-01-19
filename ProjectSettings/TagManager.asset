@@ -10,6 +10,7 @@ TagManager:
   - Block
   - Pads
   - DrumVoice
+  - Traverser
   layers:
   - Default
   - TransparentFX
