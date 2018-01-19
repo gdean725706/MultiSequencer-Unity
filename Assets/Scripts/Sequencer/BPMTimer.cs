@@ -124,7 +124,8 @@ public class BPMTimer : MonoBehaviour
             return;
 
         // Beat divisions
-        // Number of samples in a minute / beats in a minute * time sig
+        // Work out the number of samples in a single tick (beat).
+        // This is what we will increment our nextTick by when reached
         double samplesPerTick = sampleRate * 60.0f / bpm * 4.0f / signatureLo;
         // Quarter divisions
         double samplesPerStep = sampleRate * 15.0f / bpm * 4.0f / signatureLo;
@@ -145,7 +146,7 @@ public class BPMTimer : MonoBehaviour
                 // have we reached the step tick?
                 while (sample + j >= nextStepTick)
                 {
-                    // Yes, so update the next step tick
+                    // Yes, so update to the next step tick
                     nextStepTick += samplesPerStep;
                     // Divison wrapping
                     if (++stepCount > signatureHi)

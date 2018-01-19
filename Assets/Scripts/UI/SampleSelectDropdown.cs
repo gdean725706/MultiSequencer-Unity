@@ -30,6 +30,21 @@ public class SampleSelectDropdown : MonoBehaviour
 
     public void RemoveLastStep()
     {
+        // Safely empty list if about to delete final remaining cube
+        if (activeCubes.Count <= 1)
+        {
+            activeCubes.Clear();
+            activeCubesNames.Clear();
+            // Add "None" to list
+            drop.ClearOptions();
+            List<string> str = new List<string> { "None" };
+            drop.AddOptions(str);
+            return;
+        }
+
         activeCubes.RemoveAt(activeCubes.Count - 1);
+        activeCubesNames.RemoveAt(activeCubes.Count - 1);
+        drop.ClearOptions();
+        drop.AddOptions(activeCubesNames);
     }
 }

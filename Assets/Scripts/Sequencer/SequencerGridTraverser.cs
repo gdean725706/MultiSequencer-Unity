@@ -35,6 +35,8 @@ public class SequencerGridTraverser : MonoBehaviour
 
     private static ulong randomSeed;
 
+    private bool disabledSelf = false;
+
     // Use this for initialization
     void Start ()
     {
@@ -45,7 +47,7 @@ public class SequencerGridTraverser : MonoBehaviour
         grid = GameObject.Find("SequencerGrid").GetComponent<SequencerGrid>();
         clock = GameObject.Find("Timer").GetComponent<BPMTimer>();
 
-        BPMTimer.stepOccurred += incrementBeat;
+        BPMTimer.stepOccurred += incrementStep;
 
         totalSteps = (grid.xSize * grid.ySize);
 
@@ -56,14 +58,27 @@ public class SequencerGridTraverser : MonoBehaviour
         currentTick = 0;
         lastTick = 0;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-        if (!Running) return;
+        // Disable pads before stopping running
+        if (!Running && !disabledSelf)
+        {
+            grid.GetPad(currentTick).CurrentStep = false;
+            grid.GetPad(lastTick).CurrentStep = false;
+            disabledSelf = true;
+            return;
+        }
+        else if (Running && disabledSelf)
+        {
+            disabledSelf = false;
+        }
+        else if (!Running && disabledSelf) return;
 
         totalSteps = (grid.xSize * grid.ySize);
 
+        // Update active pad and disable previous one
         if (grid != null)
         {
             grid.GetPad(currentTick).CurrentStep = true;
@@ -72,7 +87,7 @@ public class SequencerGridTraverser : MonoBehaviour
         
 	}
 
-    void incrementBeat(int beatIn)
+    void incrementStep(int tickIn)
     {
         if (!awake) return;
 
@@ -115,9 +130,9 @@ public class SequencerGridTraverser : MonoBehaviour
                 if (currentTick >= totalSteps) currentTick = 0;
                 if (currentTick <= 0) currentTick = totalSteps;
                 if (GetRandom() > 0.5f)
-                    currentTick += beatIn % totalSteps;
+                    currentTick += tickIn % totalSteps;
                 else
-                    currentTick -= beatIn % totalSteps;
+                    currentTick -= tickIn % totalSteps;
                 break;
             default:
                 currentTick += 1;

@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 spawnPos = player.position + player.forward * spawnDistance;
                 var obj = Instantiate(StepBlockPrefab, spawnPos, player.rotation, StepBlockSpawnParent);
                 spawned++;
-                obj.name = obj.name + spawned;
+                obj.name = obj.name.Substring(0,4) + " " + spawned;
                 spawnedSteps.Push(obj);
 
                 // Update UI
@@ -78,7 +78,9 @@ public class PlayerController : MonoBehaviour
                 var remove = spawnedSteps.Pop();
                 remove.GetComponent<StepBlock>().DestroyStep();
                 spawned--;
+                // Update UI
                 SelectDropdown.RemoveLastStep();
+                SelectSlider.RemoveLastStep();
             }
         }
 

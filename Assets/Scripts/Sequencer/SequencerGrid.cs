@@ -31,7 +31,6 @@ public class SequencerGrid : MonoBehaviour {
     private void Start()
     {
         clock = GameObject.Find("Timer").GetComponent<BPMTimer>();
-
     }
 
     // Update is called once per frame 
