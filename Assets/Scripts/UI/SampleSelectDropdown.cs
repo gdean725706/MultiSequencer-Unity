@@ -20,6 +20,8 @@ public class SampleSelectDropdown : MonoBehaviour
     {
 	}
 
+    // Called when a step is spawned
+    // Adds to dropdown
     public void AddStep(GameObject obj)
     {
         activeCubes.Add(obj);
@@ -28,6 +30,7 @@ public class SampleSelectDropdown : MonoBehaviour
         drop.AddOptions(activeCubesNames);
     }
 
+    // called when step is deleted
     public void RemoveLastStep()
     {
         // Safely empty list if about to delete final remaining cube

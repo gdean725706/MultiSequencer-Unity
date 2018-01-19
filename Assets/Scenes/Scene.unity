@@ -4953,8 +4953,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cdf84f284d86af49aff00a357c39461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: 4
-  ySize: 4
+  xSize: 16
+  ySize: 16
   scaleFactor: 2
   Pad: {fileID: 1354743328055310, guid: 938eccf7402b80f4f9e697ffd9404139, type: 2}
   Mixer: {fileID: 243729524622104938, guid: fd68781aa845ab4499ce3a7f84166594, type: 2}

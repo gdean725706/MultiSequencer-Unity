@@ -20,8 +20,8 @@ public class BPMTimer : MonoBehaviour
     public int signatureLo = 4;
     
     // To store next ticks
-    private double nextTick = 0.0f;
-    private double nextStepTick = 0.0f;
+    private double nextBeat = 0.0f;
+    private double nextQuarterBeat = 0.0f;
     // metro amp
     private float amp = 0.0f;
     // metro phase
@@ -53,15 +53,15 @@ public class BPMTimer : MonoBehaviour
         // Start at time sig high
         beatCount = signatureHi;
         stepCount = signatureHi;
-
+        
         // Fetch samplerate from audio engine
         sampleRate = AudioSettings.outputSampleRate;
         // Get Start tick from audio settings (seconds)
         double startTick = AudioSettings.dspTime;
+        // Set the next tick to be some time ahead to allow everything to load first
+        nextBeat = startTick * sampleRate;
+        nextQuarterBeat = nextBeat * 0.25f;
 
-        // Next tick in samples will be dsp time (seconds) * samplerate
-        nextTick = startTick * sampleRate;
-        nextStepTick = startTick * (sampleRate * 0.5f);
         running = true;
     }
 
@@ -76,7 +76,7 @@ public class BPMTimer : MonoBehaviour
     /// <returns></returns>
     public double GetNextBeatTime()
     {
-        return nextTick / sampleRate;
+        return nextBeat / sampleRate;
     }
     
     /// <summary>
@@ -100,7 +100,7 @@ public class BPMTimer : MonoBehaviour
 
     public double GetNextStepTick()
     {
-        return nextStepTick;
+        return nextQuarterBeat;
     }
     /// <summary>
     /// Sets the direction of the clock (0 - Forwards (default), 1 - Backwards)
@@ -124,11 +124,11 @@ public class BPMTimer : MonoBehaviour
             return;
 
         // Beat divisions
-        // Work out the number of samples in a single tick (beat).
+        // Work out the number of samples in a single beat.
         // This is what we will increment our nextTick by when reached
-        double samplesPerTick = sampleRate * 60.0f / bpm * 4.0f / signatureLo;
+        double samplesPerBeat = sampleRate * 60.0f / bpm * 4.0f / signatureLo;
         // Quarter divisions
-        double samplesPerStep = sampleRate * 15.0f / bpm * 4.0f / signatureLo;
+        double samplesPerQuarter = samplesPerBeat * 0.25f;
 
         // Get current audio engine sample number
         double sample = AudioSettings.dspTime * sampleRate;
@@ -142,12 +142,11 @@ public class BPMTimer : MonoBehaviour
                 // Fill buffer with sine click
                 data[j + k] += gain * amp * Mathf.Sin(phase);
 
-                // Count Quarter beat (Step) divisions
-                // have we reached the step tick?
-                while (sample + j >= nextStepTick)
+                // Have we caught up to the next beat yet?
+                while (sample + j >= nextQuarterBeat)
                 {
-                    // Yes, so update to the next step tick
-                    nextStepTick += samplesPerStep;
+                    // Yes, a beat has occured. Schedule the next beat.
+                    nextQuarterBeat += samplesPerQuarter;
                     // Divison wrapping
                     if (++stepCount > signatureHi)
                     {
@@ -177,9 +176,9 @@ public class BPMTimer : MonoBehaviour
                         stepOccurred(stepCountSum);
                 }
                 // Couting beat divisions, same logic as steps
-                while (sample + j >= nextTick)
+                while (sample + j >= nextBeat)
                 {
-                    nextTick += samplesPerTick;
+                    nextBeat += samplesPerBeat;
                     // Reset amp envelope to produce click
                     amp = 1.0F;
                     // Wrapping around

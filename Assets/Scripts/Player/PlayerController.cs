@@ -58,10 +58,14 @@ public class PlayerController : MonoBehaviour
         {
             if (StepBlockPrefab != null)
             {
+                // Get position slightly in front of player
                 Vector3 spawnPos = player.position + player.forward * spawnDistance;
                 var obj = Instantiate(StepBlockPrefab, spawnPos, player.rotation, StepBlockSpawnParent);
+                // Keep a tally of how many are spawned
                 spawned++;
+                // Format the name as this will be shown in the UI
                 obj.name = obj.name.Substring(0,4) + " " + spawned;
+                // Add to stack
                 spawnedSteps.Push(obj);
 
                 // Update UI
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour
         {
             if (spawnedSteps.Count != 0)
             {
+                // Remove from stack
                 var remove = spawnedSteps.Pop();
                 remove.GetComponent<StepBlock>().DestroyStep();
                 spawned--;
@@ -84,6 +89,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // Switching cameras
         if (Input.GetKeyDown(KeyCode.K))
         {
             sceneCamActive = !sceneCamActive;

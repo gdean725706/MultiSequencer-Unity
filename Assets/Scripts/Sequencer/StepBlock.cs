@@ -49,9 +49,11 @@ public class StepBlock : MonoBehaviour
             playActive = false;
         }
 
+        // Get next step in seconds
         nextStepSeconds = timer.GetNextStepTick() / AudioSettings.outputSampleRate;
     }
 
+    // Handle collision and corresponding pad activation
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pads"))
@@ -65,7 +67,7 @@ public class StepBlock : MonoBehaviour
             
         }
     }
-
+    // Deactivate pad on exit
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Pads"))
@@ -90,6 +92,7 @@ public class StepBlock : MonoBehaviour
         }
     }
 
+    // Destroy 
     public void DestroyStep()
     {
         foreach (var pad in associatedPads)
@@ -100,6 +103,7 @@ public class StepBlock : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Recives from UI slider, looks up sample in sample list
     public void UpdateSample(int sampleNumber)
     {
         sampleNumber = Mathf.Clamp(sampleNumber, 0, Samples.Count);
