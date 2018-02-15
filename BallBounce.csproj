@@ -297,7 +297,6 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
-    <Compile Include="Assets\SampleSelectSlider.cs" />
     <Compile Include="Assets\Scripts\BallDemo\ballController.cs" />
     <Compile Include="Assets\Scripts\BallDemo\BallGenerator.cs" />
     <Compile Include="Assets\Scripts\BallDemo\BulletController.cs" />
@@ -305,18 +304,17 @@
     <Compile Include="Assets\Scripts\Player\ExtendedFlycam.cs" />
     <Compile Include="Assets\Scripts\Player\GunController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\ProceduralAudio\DrumVoice.cs" />
-    <Compile Include="Assets\Scripts\ProceduralAudio\FilterRead.cs" />
-    <Compile Include="Assets\Scripts\ProceduralAudio\NoiseGenerator.cs" />
-    <Compile Include="Assets\Scripts\ProceduralAudio\Phasor.cs" />
     <Compile Include="Assets\Scripts\Sequencer\BPMTimer.cs" />
-    <Compile Include="Assets\Scripts\Sequencer\GameOfLife.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerGrid.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerGridTraverser.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerLine.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerPad.cs" />
     <Compile Include="Assets\Scripts\Sequencer\StepBlock.cs" />
     <Compile Include="Assets\Scripts\UI\SampleSelectDropdown.cs" />
+    <Compile Include="Assets\Scripts\UI\SampleSelectSlider.cs" />
+    <Compile Include="Assets\Scripts\UI\SequencerDirectionDropdown.cs" />
+    <Compile Include="Assets\Scripts\UI\SequencerSelectDropdown.cs" />
+    <Compile Include="Assets\Scripts\UI\SequencerToggle.cs" />
     <Compile Include="Assets\Scripts\UI\TextSliderValue.cs" />
   </ItemGroup>
   <ItemGroup>

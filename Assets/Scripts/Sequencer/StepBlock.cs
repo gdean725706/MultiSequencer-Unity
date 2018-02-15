@@ -18,29 +18,6 @@ public class StepBlock : MonoBehaviour
     private bool activeStep = false;
 
     public int counter = 0;
-
-    private float amp = 0;
-
-    public enum Sound
-    {
-        Hat,
-        Kick
-    }
-
-    public Sound SoundType = Sound.Hat;
-
-    [Range(0f, 1f)]
-    public float HatDecay = 0.8f;
-    private float prevHatDecay;
-
-    public GameObject DrumVoiceSource;
-
-    private NoiseGenerator noise;
-    private DrumVoice kick;
-
-    public float assocPadAliveSum = 0f;
-    public bool GOLLifetimeModulation = false;
-
     private double nextStepSeconds = 0;
 
     private BPMTimer timer;
@@ -52,15 +29,7 @@ public class StepBlock : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         timer = GameObject.Find("Timer").GetComponent<BPMTimer>();
-
-        if (DrumVoiceSource == null)
-        {
-            DrumVoiceSource = GameObject.Find("DrumVoices");
-        }
         rend = GetComponent<Renderer>();
-
-        noise = DrumVoiceSource.GetComponentInChildren<NoiseGenerator>();
-        kick = DrumVoiceSource.GetComponentInChildren<DrumVoice>();
 
         UpdateSample(currentSample = (int)Random.Range(0, Samples.Count));
 
@@ -74,33 +43,19 @@ public class StepBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Has the play switch been toggled from the audio thread?
         if (playActive)
         {
+            // Yes, schedule to play on next step
             audioSource.PlayScheduled(nextStepSeconds);
             playActive = false;
         }
 
-        if (HatDecay != prevHatDecay)
-        {
-            noise.AmpDecayTime = HatDecay;
-        }
-        prevHatDecay = HatDecay;
-
-        if (GOLLifetimeModulation)
-        {
-            float padAliveTime = 0;
-
-            foreach (var pad in associatedPads)
-            {
-                padAliveTime += pad.GOLTimeAlive;
-            }
-
-            assocPadAliveSum = padAliveTime;
-        }
-
+        // Get next step in seconds
         nextStepSeconds = timer.GetNextStepTick() / AudioSettings.outputSampleRate;
     }
 
+    // Handle collision and corresponding pad activation
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pads"))
@@ -114,7 +69,7 @@ public class StepBlock : MonoBehaviour
             
         }
     }
-
+    // Deactivate pad on exit
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Pads"))
@@ -137,17 +92,9 @@ public class StepBlock : MonoBehaviour
             playActive = true;
             return;
         }
-        switch (SoundType)
-        {
-            case Sound.Kick:
-                kick.Ping();
-                break;
-            case Sound.Hat:
-                noise.Ping();
-                break;
-        }
     }
 
+    // Destroy 
     public void DestroyStep()
     {
         foreach (var pad in associatedPads)
@@ -158,6 +105,7 @@ public class StepBlock : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Recives from UI slider, looks up sample in sample list
     public void UpdateSample(int sampleNumber)
     {
         sampleNumber = Mathf.Clamp(sampleNumber, 0, Samples.Count);

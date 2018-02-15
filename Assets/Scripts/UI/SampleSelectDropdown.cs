@@ -20,6 +20,8 @@ public class SampleSelectDropdown : MonoBehaviour
     {
 	}
 
+    // Called when a step is spawned
+    // Adds to dropdown
     public void AddStep(GameObject obj)
     {
         activeCubes.Add(obj);
@@ -28,8 +30,24 @@ public class SampleSelectDropdown : MonoBehaviour
         drop.AddOptions(activeCubesNames);
     }
 
+    // called when step is deleted
     public void RemoveLastStep()
     {
+        // Safely empty list if about to delete final remaining cube
+        if (activeCubes.Count <= 1)
+        {
+            activeCubes.Clear();
+            activeCubesNames.Clear();
+            // Add "None" to list
+            drop.ClearOptions();
+            List<string> str = new List<string> { "None" };
+            drop.AddOptions(str);
+            return;
+        }
+
         activeCubes.RemoveAt(activeCubes.Count - 1);
+        activeCubesNames.RemoveAt(activeCubes.Count - 1);
+        drop.ClearOptions();
+        drop.AddOptions(activeCubesNames);
     }
 }
