@@ -89,7 +89,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Switching cameras
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            write = !write;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            noWrite = !noWrite;
+        }
+
         if (Input.GetKeyDown(KeyCode.K))
         {
             sceneCamActive = !sceneCamActive;

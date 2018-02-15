@@ -18,6 +18,29 @@ public class StepBlock : MonoBehaviour
     private bool activeStep = false;
 
     public int counter = 0;
+
+    private float amp = 0;
+
+    public enum Sound
+    {
+        Hat,
+        Kick
+    }
+
+    public Sound SoundType = Sound.Hat;
+
+    [Range(0f, 1f)]
+    public float HatDecay = 0.8f;
+    private float prevHatDecay;
+
+    public GameObject DrumVoiceSource;
+
+    private NoiseGenerator noise;
+    private DrumVoice kick;
+
+    public float assocPadAliveSum = 0f;
+    public bool GOLLifetimeModulation = false;
+
     private double nextStepSeconds = 0;
 
     private BPMTimer timer;
@@ -29,7 +52,15 @@ public class StepBlock : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         timer = GameObject.Find("Timer").GetComponent<BPMTimer>();
+
+        if (DrumVoiceSource == null)
+        {
+            DrumVoiceSource = GameObject.Find("DrumVoices");
+        }
         rend = GetComponent<Renderer>();
+
+        noise = DrumVoiceSource.GetComponentInChildren<NoiseGenerator>();
+        kick = DrumVoiceSource.GetComponentInChildren<DrumVoice>();
 
         UpdateSample(currentSample = (int)Random.Range(0, Samples.Count));
 
@@ -51,7 +82,24 @@ public class StepBlock : MonoBehaviour
             playActive = false;
         }
 
-        // Get next step in seconds
+        if (HatDecay != prevHatDecay)
+        {
+            noise.AmpDecayTime = HatDecay;
+        }
+        prevHatDecay = HatDecay;
+
+        if (GOLLifetimeModulation)
+        {
+            float padAliveTime = 0;
+
+            foreach (var pad in associatedPads)
+            {
+                padAliveTime += pad.GOLTimeAlive;
+            }
+
+            assocPadAliveSum = padAliveTime;
+        }
+
         nextStepSeconds = timer.GetNextStepTick() / AudioSettings.outputSampleRate;
     }
 
@@ -91,6 +139,15 @@ public class StepBlock : MonoBehaviour
         {
             playActive = true;
             return;
+        }
+        switch (SoundType)
+        {
+            case Sound.Kick:
+                kick.Ping();
+                break;
+            case Sound.Hat:
+                noise.Ping();
+                break;
         }
     }
 
