@@ -43,8 +43,10 @@ public class StepBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Has the play switch been toggled from the audio thread?
         if (playActive)
         {
+            // Yes, schedule to play on next step
             audioSource.PlayScheduled(nextStepSeconds);
             playActive = false;
         }

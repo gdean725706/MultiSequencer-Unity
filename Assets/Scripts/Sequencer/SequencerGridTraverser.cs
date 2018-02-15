@@ -94,7 +94,6 @@ public class SequencerGridTraverser : MonoBehaviour
         if (!Running) return;
         
         lastTick = currentTick;
-        
 
         switch (SequencerDirection)
         {
@@ -121,6 +120,7 @@ public class SequencerGridTraverser : MonoBehaviour
             case Mode.Brownian:
                 if (currentTick >= totalSteps) currentTick = 0;
                 if (currentTick <= 0) currentTick = totalSteps;
+                // Fetch a random number - 50/50 chance it goes forward or backwards
                 if (GetRandom() > 0.5f)
                     currentTick += 1;
                 else
@@ -142,6 +142,7 @@ public class SequencerGridTraverser : MonoBehaviour
     }
 
     // Linear-feedback shift register pseudorandom number generator
+    //https://docs.unity3d.com/Manual/AudioMixerNativeAudioPlugin.html
     float GetRandom()
     {
         const float scale = 1.0f / (float)0x7FFFFFFF;
