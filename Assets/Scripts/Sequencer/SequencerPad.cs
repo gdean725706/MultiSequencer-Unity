@@ -98,5 +98,12 @@ public class SequencerPad : MonoBehaviour {
         }
     }
 
+    public void SpawnBlock()
+    {
+
+    }
+
+   
+
 
 }

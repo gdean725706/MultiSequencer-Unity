@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public GameObject StepBlockPrefab;
-    public Transform StepBlockSpawnParent;
+    public BlockSpawnManager blockSpawnManager;
 
     [SerializeField]
     private float spawnDistance = 1;
-
-    private Stack<GameObject> spawnedSteps = new Stack<GameObject>();
+    
 
     public bool write = false;
     public bool noWrite = true;
@@ -20,9 +17,6 @@ public class PlayerController : MonoBehaviour
 
     public Camera PlayerCamera;
     public Camera SceneCamera;
-
-    public SampleSelectDropdown SelectDropdown;
-    public SampleSelectSlider SelectSlider;
 
     private enum ActiveCamera
     {
@@ -38,6 +32,11 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        if (blockSpawnManager == null)
+        {
+            blockSpawnManager = GameObject.Find("BlockSpawnManager").GetComponent<BlockSpawnManager>();
+        }
+        
         player = transform;
 
         // Find Cameras
@@ -56,37 +55,15 @@ public class PlayerController : MonoBehaviour
         // Spawn cube
 		if (Input.GetKeyDown(KeyCode.C))
         {
-            if (StepBlockPrefab != null)
-            {
-                // Get position slightly in front of player
-                Vector3 spawnPos = player.position + player.forward * spawnDistance;
-                var obj = Instantiate(StepBlockPrefab, spawnPos, player.rotation, StepBlockSpawnParent);
-                // Keep a tally of how many are spawned
-                spawned++;
-                // Format the name as this will be shown in the UI
-                obj.name = obj.name.Substring(0,4) + " " + spawned;
-                // Add to stack
-                spawnedSteps.Push(obj);
+            Vector3 spawnPos = player.position + player.forward * spawnDistance;
 
-                // Update UI
-                SelectDropdown.AddStep(obj);
-                SelectSlider.AddStep(obj);
-            }
+            blockSpawnManager.AddNewBlock(spawnPos, player.rotation);
         }
 
         // Undo spawn cube
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (spawnedSteps.Count != 0)
-            {
-                // Remove from stack
-                var remove = spawnedSteps.Pop();
-                remove.GetComponent<StepBlock>().DestroyStep();
-                spawned--;
-                // Update UI
-                SelectDropdown.RemoveLastStep();
-                SelectSlider.RemoveLastStep();
-            }
+            blockSpawnManager.RemoveLastBlock();
         }
 
         if (Input.GetKeyDown(KeyCode.G))
@@ -104,7 +81,17 @@ public class PlayerController : MonoBehaviour
             sceneCamActive = !sceneCamActive;
             SceneCamera.gameObject.SetActive(sceneCamActive);
             PlayerCamera.gameObject.SetActive(!sceneCamActive);
+            activeCam = 1 - activeCam;
         }
+
+        //if (activeCam == ActiveCamera.Scene)
+        //{
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        RaycastHit hit;
+        //        Ray ray = SceneCamera.ScreenPointToRay(Input.mousePosition);
+        //    }
+        //}
         
 	}
 
@@ -116,11 +103,6 @@ public class PlayerController : MonoBehaviour
             if (!noWrite)
                 pad.State = write ? 1 : 0;
         }
-    }
-
-    private void OnGUI()
-    {
-        
     }
 
 
