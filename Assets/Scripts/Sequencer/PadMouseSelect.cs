@@ -12,18 +12,6 @@ public class PadMouseSelect : MonoBehaviour
         seqPad = GetComponentInParent<SequencerPad>();
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnMouseDown()
     {
         if (seqPad == null)
@@ -33,8 +21,9 @@ public class PadMouseSelect : MonoBehaviour
 
         if (seqPad != null)
         {
-            Debug.Log("Clicked " + seqPad.name);
+            seqPad.SpawnBlock();
         }
 
     }
+    
 }

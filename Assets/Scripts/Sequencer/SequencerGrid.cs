@@ -6,6 +6,9 @@ using UnityEngine.Audio;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class SequencerGrid : MonoBehaviour {
 
+    [SerializeField]
+    private BlockSpawnManager spawnManager;
+
     public int xSize = 16;
     public int ySize = 16;
 
@@ -30,6 +33,10 @@ public class SequencerGrid : MonoBehaviour {
 	}
     private void Start()
     {
+        if (spawnManager == null)
+        {
+            spawnManager = GameObject.Find("BlockSpawnManager").GetComponent<BlockSpawnManager>();
+        }
         clock = GameObject.Find("Timer").GetComponent<BPMTimer>();
     }
 
@@ -56,7 +63,9 @@ public class SequencerGrid : MonoBehaviour {
                 grid[i] = Instantiate(Pad, vertices[i], Quaternion.identity, transform);
                 grid[i].name = "Pad" + i;
 
+                // Attach sequencer pad component and link to block spawn manager
                 steps[i] = grid[i].AddComponent<SequencerPad>();
+                steps[i].setSpawnManager(spawnManager);
                 steps[i].padNumber = i;
             }
         }

@@ -4944,6 +4944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cdf84f284d86af49aff00a357c39461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnManager: {fileID: 970524204}
   xSize: 16
   ySize: 16
   scaleFactor: 2

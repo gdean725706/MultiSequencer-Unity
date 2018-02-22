@@ -9,6 +9,15 @@ using UnityEngine;
 public class SequencerPad : MonoBehaviour {
 
     [SerializeField]
+    private BlockSpawnManager blockSpawnManager;
+
+    [SerializeField]
+    private Transform spawnMarker;
+
+    [SerializeField]
+    private float spawnDistance = 1.1f;
+
+    [SerializeField]
     public bool Active = false;
 
     [SerializeField]
@@ -35,6 +44,11 @@ public class SequencerPad : MonoBehaviour {
 
     public delegate void PlayStep(int stepNumber);
     public event PlayStep stepOccurred;
+
+    public void setSpawnManager(BlockSpawnManager manager)
+    {
+        blockSpawnManager = manager;
+    }
 
     // Use this for initialization
     void Start ()
@@ -100,7 +114,13 @@ public class SequencerPad : MonoBehaviour {
 
     public void SpawnBlock()
     {
+        if (spawnMarker == null)
+        {
+            spawnMarker = transform.GetChild(1);
+        }
 
+        Vector3 spawnPos = spawnMarker.position + transform.up * spawnDistance;
+        blockSpawnManager.AddNewBlock(spawnPos, transform.rotation);
     }
 
    
