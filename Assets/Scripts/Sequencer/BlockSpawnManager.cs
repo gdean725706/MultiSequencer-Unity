@@ -13,18 +13,6 @@ public class BlockSpawnManager : MonoBehaviour
     private Stack<GameObject> spawnedSteps = new Stack<GameObject>();
     private int spawned = 0;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     /// <summary>
     /// Creates a new step block at the specified position / rotation
     /// </summary>
