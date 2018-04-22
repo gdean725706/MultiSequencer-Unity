@@ -37,6 +37,9 @@ public class SequencerGridTraverser : MonoBehaviour
 
     private bool disabledSelf = false;
 
+    [SerializeField]
+    private int firstStep = 0;
+
     // Use this for initialization
     void Start ()
     {
@@ -54,6 +57,7 @@ public class SequencerGridTraverser : MonoBehaviour
         awake = true;
 
         currentTick += InitialOffset;
+        firstStep -= 1;
 
         currentTick = 0;
         lastTick = 0;
@@ -76,8 +80,6 @@ public class SequencerGridTraverser : MonoBehaviour
         }
         else if (!Running && disabledSelf) return;
 
-        totalSteps = (grid.xSize * grid.ySize);
-
         // Update active pad and disable previous one
         if (grid != null)
         {
@@ -94,32 +96,33 @@ public class SequencerGridTraverser : MonoBehaviour
         if (!Running) return;
         
         lastTick = currentTick;
+        
 
         switch (SequencerDirection)
         {
             case Mode.Forward:
-                if (currentTick >= totalSteps) currentTick = 0;
+                if (currentTick >= totalSteps) currentTick = firstStep;
                 currentTick += 1;
                 break;
             case Mode.Reverse:
-                if (currentTick <= 0) currentTick = totalSteps;
+                if (currentTick <= firstStep) currentTick = totalSteps;
                 currentTick -= 1;
                 break;
             case Mode.Diagonal:
-                if (currentTick >= totalSteps) currentTick = 0;
+                if (currentTick >= totalSteps) currentTick = firstStep;
                 currentTick += 1 * grid.xSize + JumpStepOffset;
                 break;
             case Mode.PingPong:
                 if (currentTick >= totalSteps) pingpongForward = false;
-                if (currentTick <= 0) pingpongForward = true;
+                if (currentTick <= firstStep) pingpongForward = true;
                 if (pingpongForward)
                     currentTick += 1;
                 else
                     currentTick -= 1;
                 break;
             case Mode.Brownian:
-                if (currentTick >= totalSteps) currentTick = 0;
-                if (currentTick <= 0) currentTick = totalSteps;
+                if (currentTick >= totalSteps) currentTick = firstStep;
+                if (currentTick <= firstStep) currentTick = totalSteps;
                 // Fetch a random number - 50/50 chance it goes forward or backwards
                 if (GetRandom() > 0.5f)
                     currentTick += 1;
@@ -127,8 +130,8 @@ public class SequencerGridTraverser : MonoBehaviour
                     currentTick -= 1;
                 break;
             case Mode.Random:
-                if (currentTick >= totalSteps) currentTick = 0;
-                if (currentTick <= 0) currentTick = totalSteps;
+                if (currentTick >= totalSteps) currentTick = firstStep;
+                if (currentTick <= firstStep) currentTick = totalSteps;
                 if (GetRandom() > 0.5f)
                     currentTick += tickIn % totalSteps;
                 else
@@ -148,5 +151,26 @@ public class SequencerGridTraverser : MonoBehaviour
         const float scale = 1.0f / (float)0x7FFFFFFF;
         randomSeed = randomSeed * 69069 + 1;
         return (((randomSeed >> 16) ^ randomSeed) & 0x7FFFFFFF) * scale;
+    }
+
+    public void SetLastStep(int step)
+    {
+        // Bounds check then set
+        totalSteps = boundsCheck(step);
+    }
+
+    public void SetFirstStep(int step)
+    {
+        totalSteps = boundsCheck(step);
+  }
+
+    public int GetLastStep()
+    {
+        return totalSteps;
+    }
+
+    private int boundsCheck(int value)
+    {
+        return value < 0 ? totalSteps : value > (grid.xSize * grid.ySize) ? totalSteps : value;
     }
 }

@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerController : MonoBehaviour
 {
-    public BlockSpawnManager blockSpawnManager;
+    public BlockSpawnManager BlockSpawnManager;
+
+    [SerializeField]
+    private FirstPersonController firstPersonController;
 
     [SerializeField]
     private float spawnDistance = 1;
     
-
     public bool write = false;
     public bool noWrite = true;
 
@@ -32,9 +33,9 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        if (blockSpawnManager == null)
+        if (BlockSpawnManager == null)
         {
-            blockSpawnManager = GameObject.Find("BlockSpawnManager").GetComponent<BlockSpawnManager>();
+            BlockSpawnManager = GameObject.Find("BlockSpawnManager").GetComponent<BlockSpawnManager>();
         }
         
         player = transform;
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
         if (SceneCamera == null)
             SceneCamera = GameObject.Find("SceneCamera").GetComponent<Camera>();
 
+        firstPersonController = GetComponent<FirstPersonController>();
 
 	}
 	
@@ -57,13 +59,13 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 spawnPos = player.position + player.forward * spawnDistance;
 
-            blockSpawnManager.AddNewBlock(spawnPos, player.rotation);
+            BlockSpawnManager.AddNewBlock(spawnPos, player.rotation);
         }
 
         // Undo spawn cube
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            blockSpawnManager.RemoveLastBlock();
+            BlockSpawnManager.RemoveLastBlock();
         }
 
         if (Input.GetKeyDown(KeyCode.G))
@@ -81,6 +83,7 @@ public class PlayerController : MonoBehaviour
             sceneCamActive = !sceneCamActive;
             SceneCamera.gameObject.SetActive(sceneCamActive);
             PlayerCamera.gameObject.SetActive(!sceneCamActive);
+            firstPersonController.enabled = !firstPersonController.enabled;
             activeCam = 1 - activeCam;
         }
 

@@ -12,7 +12,7 @@ public class SequencerGrid : MonoBehaviour {
     public int xSize = 16;
     public int ySize = 16;
 
-    public float scaleFactor = 1;
+    private float scaleFactor = 2;
 
     public GameObject Pad;
     public AudioMixerGroup Mixer;
@@ -25,6 +25,8 @@ public class SequencerGrid : MonoBehaviour {
     private BPMTimer clock;
     
     public SequencerPad[] mainGrid { get { return steps; } }
+
+    public static int MaxSize;
 
 	// Use this for initialization
 	void Awake ()
@@ -43,7 +45,7 @@ public class SequencerGrid : MonoBehaviour {
     // Update is called once per frame 
     void Update ()
     {
-		
+		MaxSize = xSize * ySize;
 	}
 
     void GenerateGrid()

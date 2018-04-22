@@ -19,11 +19,11 @@ public class DrumVoice : MonoBehaviour {
     public float KickDecayRate = 0.53f;
     [Range(0f, 1f)]
     public float AmpDecayRate = 0.95f;
+    
+    public float modIndex = 0f;
+    public float FMFrequency = 4000f;
 
-    [Range(0f, 0.5f)]
-    public float FMAmount = 0f;
-
-    private float frequency = 440f;
+    private float carrierFrequency = 440f;
     private float decay = 1.0f;
     private float phase;
     private const float DOUBLE_PI = 6.28318530718f;
@@ -52,7 +52,7 @@ public class DrumVoice : MonoBehaviour {
         m_square.CreateSquare();
         m_sine.CreateSine();
         m_sineFM.CreateSine();
-        m_fmPhasor.SetFrequency(4000f);
+        m_fmPhasor.SetFrequency(FMFrequency);
     }
 
     // Use this for initialization
@@ -92,6 +92,48 @@ public class DrumVoice : MonoBehaviour {
         return outputStart + ((outputEnd - outputStart) / (inputEnd - inputStart)) * (input - inputStart);
     }
 
+    public void UpdateStartFrequency(float frequency)
+    {
+        frequency = Mathf.Clamp(frequency, 0.0f, 20000.0f);
+        KickStartFrequency = frequency;
+    }
+
+    public void UpdateEndFrequency(float frequency)
+    {
+        frequency = Mathf.Clamp(frequency, 0.0f, 20000.0f);
+        KickEndFrequency = frequency;
+    }
+
+    public void UpdatePitchDecayRate(float rate)
+    {
+        rate = Mathf.Clamp(rate, 0.0f, 1.0f);
+        KickDecayRate = rate;
+    }
+
+    public void UpdateAmpDecayRate(float rate)
+    {
+        rate = Mathf.Clamp(rate, 0.0f, 1.0f);
+        AmpDecayRate = rate;
+    }
+
+    public void UpdateModIndex(float index)
+    {
+        index = Mathf.Clamp(index, 0f, 1f);
+        modIndex = index;
+    }
+
+    public void UpdateFMFrequency(float frequency)
+    {
+        frequency = Mathf.Clamp(frequency, 0f, 8000f);
+        FMFrequency = frequency;
+    }
+
+    public void UpdateSineSquareMix(float mix)
+    {
+        mix = Mathf.Clamp(mix, 0f, 1f);
+        SineSquareMix = mix;
+    }
+
     private void OnAudioFilterRead(float[] data, int channels)
     {
 
@@ -111,32 +153,33 @@ public class DrumVoice : MonoBehaviour {
             return;
         }
 
-        frequency = scaleRange(decay, 1, 0, KickStartFrequency, KickEndFrequency);
+        carrierFrequency = scaleRange(decay, 1, 0, KickStartFrequency, KickEndFrequency);
 
-        m_phasor.SetFrequency(frequency);
+        m_phasor.SetFrequency(carrierFrequency);
         float sq = 0f;
         float sin = 0f;
-        float fm = 0f;
+        float fmModFreq = 0f;
         float mix = 0f;
 
         float noise_fm = 0f;
         float fm_mix = 0f;
 
-        float f = frequency * st;
+        float f = carrierFrequency * st;
         for (int j = 0; j < data.Length; j += channels)
         {   
             for (int i = 0; i < channels; i++)
             {
-                if (FMAmount != 0)
+                if (modIndex != 0)
                 {
-                    fm = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
+                    m_fmPhasor.SetFrequency(FMFrequency);
+                    fmModFreq = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
 
-                    frequency += (fm * FMAmount);
+                    carrierFrequency += (fmModFreq * modIndex);
 
                     m_fmPhasor.Tick();
                 }
 
-                m_phasor.SetFrequency(frequency);
+                m_phasor.SetFrequency(carrierFrequency);
                 sq = (float)m_square.LinearLookup(m_phasor.GetPhase() * m_square.GetSize()) * Amp;
                 sin = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
 

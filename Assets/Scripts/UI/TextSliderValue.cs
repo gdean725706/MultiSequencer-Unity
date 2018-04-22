@@ -5,6 +5,10 @@ public class TextSliderValue : MonoBehaviour
 {
 
     Text textComponent;
+
+    [SerializeField]
+    bool round = true;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -19,6 +23,11 @@ public class TextSliderValue : MonoBehaviour
 
     public void UpdateTextValue(float sliderValue)
     {
-        textComponent.text = Mathf.Round(sliderValue).ToString();
+        if (round)
+        {
+            textComponent.text = Mathf.Round(sliderValue).ToString();
+        }
+        else
+            textComponent.text = sliderValue.ToString("f2");
     }
 }

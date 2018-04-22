@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public struct StepParams
+{
+
+}
+
 [RequireComponent(typeof(AudioSource))]
 public class StepBlock : MonoBehaviour
 {
@@ -45,6 +50,10 @@ public class StepBlock : MonoBehaviour
 
     private BPMTimer timer;
     private bool playActive = false;
+
+    private bool isSelected = false;
+    private Color colorOff = new Color(1f, 1f, 1f, 0.0f);
+    private Color colorSelected = new Color(1f, 0f, 0f, 1.0f);
 
     // Use this for initialization
     void Start()
@@ -101,6 +110,16 @@ public class StepBlock : MonoBehaviour
         }
 
         nextStepSeconds = timer.GetNextStepTick() / AudioSettings.outputSampleRate;
+
+        // Color
+        if (isSelected)
+        {
+            rend.material.SetColor("_Color", colorSelected);
+        }
+        else
+        {
+            rend.material.SetColor("_Color", colorOff);
+        }
     }
 
     // Handle collision and corresponding pad activation
@@ -129,6 +148,19 @@ public class StepBlock : MonoBehaviour
             if (associatedPads.Contains(pad))
                 associatedPads.Remove(pad);
             
+        }
+    }
+
+    public void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            isSelected = !isSelected;
+            // Select Block
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            DestroyStep();
         }
     }
 
@@ -169,4 +201,6 @@ public class StepBlock : MonoBehaviour
         audioSource.clip = Samples[sampleNumber];
         currentSample = sampleNumber;
     }
+
+
 }
