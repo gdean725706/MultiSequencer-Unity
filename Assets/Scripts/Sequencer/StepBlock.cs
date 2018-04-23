@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
-public struct StepParams
-{
-
-}
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(AudioSource))]
 public class StepBlock : MonoBehaviour
@@ -41,7 +37,14 @@ public class StepBlock : MonoBehaviour
     public GameObject DrumVoiceSource;
 
     private NoiseGenerator noise;
-    private DrumVoice kick;
+
+    [SerializeField]
+    private DrumVoice[] voiceChannels;
+
+    [SerializeField]
+    private int channel = 0;
+
+    private DrumVoice voice;
 
     public float assocPadAliveSum = 0f;
     public bool GOLLifetimeModulation = false;
@@ -69,7 +72,11 @@ public class StepBlock : MonoBehaviour
         rend = GetComponent<Renderer>();
 
         noise = DrumVoiceSource.GetComponentInChildren<NoiseGenerator>();
-        kick = DrumVoiceSource.GetComponentInChildren<DrumVoice>();
+
+        voiceChannels = DrumVoiceSource.GetComponentsInChildren<DrumVoice>();
+
+        if (voiceChannels != null)
+            voice = voiceChannels[channel];
 
         UpdateSample(currentSample = (int)Random.Range(0, Samples.Count));
 
@@ -122,6 +129,11 @@ public class StepBlock : MonoBehaviour
         }
     }
 
+    public void setVoiceChannel(int v)
+    {
+        channel = v;
+    }
+
     // Handle collision and corresponding pad activation
     private void OnTriggerEnter(Collider other)
     {
@@ -153,14 +165,18 @@ public class StepBlock : MonoBehaviour
 
     public void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        // Check mouse isn't over UI
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            isSelected = !isSelected;
-            // Select Block
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            DestroyStep();
+            if (Input.GetMouseButtonDown(0))
+            {
+                isSelected = !isSelected;
+                // Select block...
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                DestroyStep();
+            }
         }
     }
 
@@ -175,7 +191,7 @@ public class StepBlock : MonoBehaviour
         switch (SoundType)
         {
             case Sound.Kick:
-                kick.Ping();
+                voice.Ping();
                 break;
             case Sound.Hat:
                 noise.Ping();

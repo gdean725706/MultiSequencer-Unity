@@ -6,6 +6,13 @@ using Assets.Scripts.ProceduralAudio;
 /// <summary>
 /// Wavetable Drum voice
 /// </summary>
+/// 
+
+    public struct DrumVoiceParams
+{
+
+}
+
 public class DrumVoice : MonoBehaviour {
 
     private AudioSource audioSource;

@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class SampleSelectDropdown : MonoBehaviour
+public class BlockSelectDropdown : MonoBehaviour
 {
     private List<GameObject> activeCubes = new List<GameObject>();
     private List<string> activeCubesNames = new List<string>();
 
     private Dropdown drop;
 
-	// Use this for initialization
-	void Start ()
+    [SerializeField]
+    private Slider startFreq;
+    [SerializeField]
+    private Slider endFreq;
+    [SerializeField]
+    private Slider pitchDecay;
+    [SerializeField]
+    private Slider ampDecay;
+    [SerializeField]
+    private Slider sinSqMix;
+
+    // Use this for initialization
+    void Start ()
     {
         drop = GetComponent<Dropdown>();
 	}
@@ -49,5 +60,10 @@ public class SampleSelectDropdown : MonoBehaviour
         activeCubesNames.RemoveAt(activeCubes.Count - 1);
         drop.ClearOptions();
         drop.AddOptions(activeCubesNames);
+    }
+
+    public void ValueChanged(int value)
+    {
+        //startFreq.value = activeCubes[value].GetComponent<StepBlock>()
     }
 }

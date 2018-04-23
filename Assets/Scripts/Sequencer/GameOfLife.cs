@@ -16,6 +16,8 @@ public class GameOfLife : MonoBehaviour
 
     public static bool running = false;
 
+    public static bool MousePaintMode = false;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -67,6 +69,15 @@ public class GameOfLife : MonoBehaviour
 
     }
 
+    public void enableGameOfLife(bool enable)
+    {
+        running = enable;
+    }
+
+    public void enableMousePaintMode(bool enable)
+    {
+        MousePaintMode = enable;
+    }
 
 
     void tick()
@@ -107,7 +118,7 @@ public class GameOfLife : MonoBehaviour
         }
     }
 
-    void randomiseCells()
+    public void randomiseCells()
     {
         //foreach (var cell in grid.mainGrid)
         //{
@@ -123,7 +134,7 @@ public class GameOfLife : MonoBehaviour
         }
     }
 
-    void clearCells()
+    public void clearCells()
     {
         for (int row = 0; row < grid.xSize; ++row)
         {

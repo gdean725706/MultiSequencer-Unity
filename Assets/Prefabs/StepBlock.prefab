@@ -227,5 +227,15 @@ MonoBehaviour:
   SoundType: 1
   HatDecay: 0.8
   DrumVoiceSource: {fileID: 0}
+  voiceChannels:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  channel: 0
   assocPadAliveSum: 0
   GOLLifetimeModulation: 0

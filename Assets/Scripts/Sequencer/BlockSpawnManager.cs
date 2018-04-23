@@ -7,7 +7,7 @@ public class BlockSpawnManager : MonoBehaviour
     public GameObject StepBlockPrefab;
     public Transform StepBlockSpawnParent;
 
-    public SampleSelectDropdown SelectDropdown;
+    public BlockSelectDropdown SelectDropdown;
     public SampleSelectSlider SelectSlider;
 
     private Stack<GameObject> spawnedSteps = new Stack<GameObject>();
