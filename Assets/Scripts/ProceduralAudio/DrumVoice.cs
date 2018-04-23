@@ -28,7 +28,7 @@ public class DrumVoice : MonoBehaviour {
     public float AmpDecayRate = 0.95f;
     
     public float modIndex = 0f;
-    public float FMFrequency = 4000f;
+    public float FMFrequency = 800f;
 
     private float carrierFrequency = 440f;
     private float decay = 1.0f;
@@ -171,6 +171,8 @@ public class DrumVoice : MonoBehaviour {
         float noise_fm = 0f;
         float fm_mix = 0f;
 
+        float mod = 0f;
+
         float f = carrierFrequency * st;
         for (int j = 0; j < data.Length; j += channels)
         {   
@@ -181,12 +183,12 @@ public class DrumVoice : MonoBehaviour {
                     m_fmPhasor.SetFrequency(FMFrequency);
                     fmModFreq = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
 
-                    carrierFrequency += (fmModFreq * modIndex);
+                    mod = carrierFrequency + (fmModFreq * modIndex);
 
+                    m_phasor.SetFrequency(mod);
                     m_fmPhasor.Tick();
                 }
 
-                m_phasor.SetFrequency(carrierFrequency);
                 sq = (float)m_square.LinearLookup(m_phasor.GetPhase() * m_square.GetSize()) * Amp;
                 sin = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
 

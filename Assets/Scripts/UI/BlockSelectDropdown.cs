@@ -64,6 +64,6 @@ public class BlockSelectDropdown : MonoBehaviour
 
     public void ValueChanged(int value)
     {
-        //startFreq.value = activeCubes[value].GetComponent<StepBlock>()
+        startFreq.value = activeCubes[value].GetComponent<StepBlock>()
     }
 }
