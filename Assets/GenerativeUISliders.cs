@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioPanel : MonoBehaviour
-{
-
-    private int currentChannel;
-
+public class GenerativeUISliders : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

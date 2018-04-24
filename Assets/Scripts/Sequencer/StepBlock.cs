@@ -28,6 +28,15 @@ public class StepBlock : MonoBehaviour
         Kick
     }
 
+    public enum Mode
+    {
+        Sample,
+        Voice,
+        Control
+    }
+
+    public Mode PlaybackMode = Mode.Sample;
+
     public Sound SoundType = Sound.Hat;
 
     [Range(0f, 1f)]
@@ -80,7 +89,7 @@ public class StepBlock : MonoBehaviour
 
         UpdateSample(currentSample = (int)Random.Range(0, Samples.Count));
 
-        if (SampleMode)
+        if (PlaybackMode == Mode.Sample)
         {
             audioSource.loop = false;
             audioSource.playOnAwake = false;
@@ -183,7 +192,7 @@ public class StepBlock : MonoBehaviour
     // -- Called from Audio Thread -- 
     void playStepSound(int stepNumber)
     {
-        if (SampleMode)
+        if (PlaybackMode == Mode.Sample)
         {
             playActive = true;
             return;
@@ -216,6 +225,16 @@ public class StepBlock : MonoBehaviour
         sampleNumber = Mathf.Clamp(sampleNumber, 0, Samples.Count);
         audioSource.clip = Samples[sampleNumber];
         currentSample = sampleNumber;
+    }
+
+    public void UpdateMode(StepBlock.Mode mode)
+    {
+        PlaybackMode = mode;
+    }
+
+    public Mode GetMode()
+    {
+        return PlaybackMode;
     }
 
 

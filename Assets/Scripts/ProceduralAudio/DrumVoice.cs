@@ -10,12 +10,21 @@ using Assets.Scripts.ProceduralAudio;
 
     public struct DrumVoiceParams
 {
-
+    float StartFrequency;
+    float EndFrequency;
+    float PitchDecayRate;
+    float AmpDecayRate;
+    float FMModIndex;
+    float FMFrequency;
 }
 
 public class DrumVoice : MonoBehaviour {
 
     private AudioSource audioSource;
+
+    DrumVoiceParams voiceParams;
+
+
 
     // Voice parameters
     [Range(0.0f, 1.0f)]

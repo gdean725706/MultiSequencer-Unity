@@ -23,6 +23,7 @@ public class TextSliderValue : MonoBehaviour
 
     public void UpdateTextValue(float sliderValue)
     {
+        sliderValue += 1;
         if (round)
         {
             textComponent.text = Mathf.Round(sliderValue).ToString();
