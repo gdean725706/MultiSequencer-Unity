@@ -8,36 +8,26 @@ using Assets.Scripts.ProceduralAudio;
 /// </summary>
 /// 
 
-    public struct DrumVoiceParams
+public class DrumVoiceParams
 {
-    float StartFrequency;
-    float EndFrequency;
-    float PitchDecayRate;
-    float AmpDecayRate;
-    float FMModIndex;
-    float FMFrequency;
+    public float StartFrequency = 167f;
+    public float EndFrequency = 20f;
+    public float PitchDecayRate = 0.53f;
+    public float AmpDecayRate = 0.95f;
+    public float FMModIndex = 0f;
+    public float FMFrequency = 800f;
+    public float SinSqMix = 0f;
 }
 
 public class DrumVoice : MonoBehaviour {
 
     private AudioSource audioSource;
 
-    DrumVoiceParams voiceParams;
-
-
+    private DrumVoiceParams voiceParams = new DrumVoiceParams();
 
     // Voice parameters
     [Range(0.0f, 1.0f)]
     public float Amp = 0f;
-    public float KickStartFrequency = 167f;
-    public float KickEndFrequency = 20f;
-    [Range(0f, 1f)]
-    public float KickDecayRate = 0.53f;
-    [Range(0f, 1f)]
-    public float AmpDecayRate = 0.95f;
-    
-    public float modIndex = 0f;
-    public float FMFrequency = 800f;
 
     private float carrierFrequency = 440f;
     private float decay = 1.0f;
@@ -58,9 +48,6 @@ public class DrumVoice : MonoBehaviour {
     [Range(0f, 1f)]
     public float ModulationAmountMultiplier = 0f;
 
-    [Range(0f, 1f)]
-    public float SineSquareMix = 0.5f;
-
     private void Awake()
     {
         m_phasor = new Phasor(AudioSettings.outputSampleRate, 440.0f, 0f);
@@ -68,7 +55,7 @@ public class DrumVoice : MonoBehaviour {
         m_square.CreateSquare();
         m_sine.CreateSine();
         m_sineFM.CreateSine();
-        m_fmPhasor.SetFrequency(FMFrequency);
+        m_fmPhasor.SetFrequency(voiceParams.FMFrequency);
     }
 
     // Use this for initialization
@@ -82,11 +69,21 @@ public class DrumVoice : MonoBehaviour {
 
 	}
 
+    public void SetParams(DrumVoiceParams param)
+    {
+        voiceParams = param;
+    }
+
+    public DrumVoiceParams GetParams()
+    {
+        return voiceParams;
+    }
+
     public void ApplyModulation(float amount)
     {
 
-        //KickDecayRate += scaleRange(amount, 0, 1000, amount * ModulationAmountMultiplier;
-        AmpDecayRate += amount * ModulationAmountMultiplier;
+        //voiceParams.PitchDecayRate += scaleRange(amount, 0, 1000, amount * ModulationAmountMultiplier;
+        voiceParams.AmpDecayRate += amount * ModulationAmountMultiplier;
     }
 
     // Linear-feedback shift register pseudorandom number generator
@@ -111,43 +108,43 @@ public class DrumVoice : MonoBehaviour {
     public void UpdateStartFrequency(float frequency)
     {
         frequency = Mathf.Clamp(frequency, 0.0f, 20000.0f);
-        KickStartFrequency = frequency;
+        voiceParams.StartFrequency = frequency;
     }
 
     public void UpdateEndFrequency(float frequency)
     {
         frequency = Mathf.Clamp(frequency, 0.0f, 20000.0f);
-        KickEndFrequency = frequency;
+        voiceParams.EndFrequency = frequency;
     }
 
     public void UpdatePitchDecayRate(float rate)
     {
         rate = Mathf.Clamp(rate, 0.0f, 1.0f);
-        KickDecayRate = rate;
+        voiceParams.PitchDecayRate = rate;
     }
 
     public void UpdateAmpDecayRate(float rate)
     {
         rate = Mathf.Clamp(rate, 0.0f, 1.0f);
-        AmpDecayRate = rate;
+        voiceParams.AmpDecayRate = rate;
     }
 
     public void UpdateModIndex(float index)
     {
         index = Mathf.Clamp(index, 0f, 1f);
-        modIndex = index;
+        voiceParams.FMModIndex = index;
     }
 
     public void UpdateFMFrequency(float frequency)
     {
         frequency = Mathf.Clamp(frequency, 0f, 8000f);
-        FMFrequency = frequency;
+        voiceParams.FMFrequency = frequency;
     }
 
     public void UpdateSineSquareMix(float mix)
     {
         mix = Mathf.Clamp(mix, 0f, 1f);
-        SineSquareMix = mix;
+        voiceParams.SinSqMix = mix;
     }
 
     private void OnAudioFilterRead(float[] data, int channels)
@@ -156,11 +153,20 @@ public class DrumVoice : MonoBehaviour {
         if (st == 0f)
             return;
 
+        // cache params for speed
+        float pitchDec = voiceParams.PitchDecayRate,
+            ampDec = voiceParams.AmpDecayRate,
+            startFreq = voiceParams.StartFrequency,
+            endFreq = voiceParams.EndFrequency, 
+            modInd = voiceParams.FMModIndex,
+            modFreq = voiceParams.FMFrequency,
+            sinSqM = voiceParams.SinSqMix; 
+
         if (decay > 0f)
-            decay *= KickDecayRate;
+            decay *= pitchDec;
 
         if (Amp > 0f)
-            Amp *= AmpDecayRate;
+            Amp *= ampDec;
 
         if (decay < 0.0001f && Amp < 0.0001f)
         {
@@ -169,7 +175,7 @@ public class DrumVoice : MonoBehaviour {
             return;
         }
 
-        carrierFrequency = scaleRange(decay, 1, 0, KickStartFrequency, KickEndFrequency);
+        carrierFrequency = scaleRange(decay, 1, 0, startFreq, endFreq);
 
         m_phasor.SetFrequency(carrierFrequency);
         float sq = 0f;
@@ -187,12 +193,12 @@ public class DrumVoice : MonoBehaviour {
         {   
             for (int i = 0; i < channels; i++)
             {
-                if (modIndex != 0)
+                if (modInd != 0)
                 {
-                    m_fmPhasor.SetFrequency(FMFrequency);
+                    m_fmPhasor.SetFrequency(modFreq);
                     fmModFreq = (float)m_sineFM.LinearLookup(m_fmPhasor.GetPhase()) * m_sineFM.GetSize() * Amp;
 
-                    mod = carrierFrequency + (fmModFreq * modIndex);
+                    mod = carrierFrequency + (fmModFreq * modInd);
 
                     m_phasor.SetFrequency(mod);
                     m_fmPhasor.Tick();
@@ -202,7 +208,7 @@ public class DrumVoice : MonoBehaviour {
                 sin = (float)m_sine.LinearLookup(m_phasor.GetPhase() * m_sine.GetSize()) * Amp;
 
                 // Mix sine square
-                mix = (sin * (1 - SineSquareMix)) + (sq * SineSquareMix);
+                mix = (sin * (1 - sinSqM)) + (sq * sinSqM);
 
 
                 data[j + i] = mix;

@@ -112,14 +112,14 @@ public class SequencerPad : MonoBehaviour {
         }
     }
 
-    public void SpawnBlock()
+    public void SpawnBlock(float offset = 0f)
     {
         if (spawnMarker == null)
         {
             spawnMarker = transform.GetChild(1);
         }
 
-        Vector3 spawnPos = spawnMarker.position + transform.up * spawnDistance;
+        Vector3 spawnPos = spawnMarker.position + ((transform.up * spawnDistance) + (transform.up * offset));
         blockSpawnManager.AddNewBlock(spawnPos, transform.rotation);
     }
 

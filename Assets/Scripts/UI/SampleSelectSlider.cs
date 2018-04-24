@@ -69,11 +69,18 @@ public class SampleSelectSlider : MonoBehaviour
         {
             _spawnedSteps[_currentStep].GetComponent<StepBlock>().UpdateMode((StepBlock.Mode)mode);
         }
+
+        sliderObj.interactable = (mode == (int)StepBlock.Mode.Sample);
     }
 
     public void AddStep(GameObject obj)
     {
         _spawnedSteps.Add(obj);
+    }
+
+    public void RemoveStep(GameObject obj)
+    {
+        _spawnedSteps.Remove(obj);
     }
 
     public void RemoveLastStep()

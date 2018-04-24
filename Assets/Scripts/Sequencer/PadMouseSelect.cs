@@ -9,6 +9,8 @@ public class PadMouseSelect : MonoBehaviour
 {
 
     private SequencerPad seqPad;
+
+    bool spawned = false;
     
 
     private void Awake()
@@ -40,7 +42,22 @@ public class PadMouseSelect : MonoBehaviour
                 else if (Input.GetMouseButton(1))
                     seqPad.State = 0;
             }
+
+            if (BlockSpawnManager.BrushMode)
+            {
+                if (Input.GetMouseButton(0) && !spawned)
+                {
+                    seqPad.SpawnBlock();
+                    spawned = true;
+                }
+            }
         }
+    }
+
+    private void OnMouseExit()
+    {
+        if (BlockSpawnManager.BrushMode)
+            spawned = false;
     }
 
     private void OnMouseDown()
@@ -53,10 +70,13 @@ public class PadMouseSelect : MonoBehaviour
                 seqPad = GetComponentInParent<SequencerPad>();
             }
 
-            if (seqPad != null)
+            if (!BlockSpawnManager.BrushMode)
             {
-                if (!GameOfLife.MousePaintMode)
-                    seqPad.SpawnBlock();
+                if (seqPad != null)
+                {
+                    if (!GameOfLife.MousePaintMode)
+                        seqPad.SpawnBlock();
+                }
             }
         }
 

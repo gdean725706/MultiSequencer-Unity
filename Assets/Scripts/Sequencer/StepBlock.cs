@@ -67,6 +67,9 @@ public class StepBlock : MonoBehaviour
     private Color colorOff = new Color(1f, 1f, 1f, 0.0f);
     private Color colorSelected = new Color(1f, 0f, 0f, 1.0f);
 
+    [SerializeField]
+    private BlockSpawnManager spawnManager;
+
     // Use this for initialization
     void Start()
     {
@@ -94,6 +97,16 @@ public class StepBlock : MonoBehaviour
             audioSource.loop = false;
             audioSource.playOnAwake = false;
         }
+
+        if (spawnManager == null)
+        {
+            spawnManager = GameObject.Find("BlockSpawnManager").GetComponent<BlockSpawnManager>();
+        }
+    }
+
+    public DrumVoice GetVoice()
+    {
+        return voice;
     }
 
     // Update is called once per frame
@@ -136,11 +149,21 @@ public class StepBlock : MonoBehaviour
         {
             rend.material.SetColor("_Color", colorOff);
         }
+        
+        isSelected = (spawnManager.GetSelectedBlock() == gameObject);
+        
     }
 
     public void setVoiceChannel(int v)
     {
         channel = v;
+        if (voiceChannels != null)
+            voice = voiceChannels[channel];
+    }
+
+    public int getVoiceChannel()
+    {
+        return channel;
     }
 
     // Handle collision and corresponding pad activation
@@ -177,15 +200,32 @@ public class StepBlock : MonoBehaviour
         // Check mouse isn't over UI
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.GetMouseButtonDown(0))
+            if (BlockSpawnManager.BrushMode)
             {
-                isSelected = !isSelected;
-                // Select block...
+                if (Input.GetMouseButton(0))
+                {
+                    spawnManager.UpdateSelectedBlock(gameObject);
+                }
+                if (Input.GetMouseButton(1))
+                {
+                    spawnManager.RemoveBlock(gameObject);
+                    DestroyStep();
+                }
             }
-            if (Input.GetMouseButtonDown(1))
+            else
             {
-                DestroyStep();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    spawnManager.UpdateSelectedBlock(gameObject);
+                    // Select block...
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    spawnManager.RemoveBlock(gameObject);
+                    DestroyStep();
+                }
             }
+           
         }
     }
 

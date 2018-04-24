@@ -7,7 +7,13 @@ public class TextSliderValue : MonoBehaviour
     Text textComponent;
 
     [SerializeField]
+    string suffix = "";
+
+    [SerializeField]
     bool round = true;
+
+    [SerializeField]
+    int offset = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -23,12 +29,13 @@ public class TextSliderValue : MonoBehaviour
 
     public void UpdateTextValue(float sliderValue)
     {
-        sliderValue += 1;
+        sliderValue += offset;
+
         if (round)
         {
-            textComponent.text = Mathf.Round(sliderValue).ToString();
+            textComponent.text = Mathf.Round(sliderValue).ToString() + " " + suffix;
         }
         else
-            textComponent.text = sliderValue.ToString("f2");
+            textComponent.text = sliderValue.ToString("f2") + " " + suffix;
     }
 }
