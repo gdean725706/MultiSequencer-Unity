@@ -42,10 +42,15 @@ public class BlockSpawnManager : MonoBehaviour
     private GameObject lastSelectedBlock;
 
     public static bool BrushMode = false;
+    public static bool ChaosMode = false;
 
     public void SetBrushMode(bool state)
     {
         BrushMode = state;
+    }
+    public void SetChaosMode(bool state)
+    {
+        ChaosMode = state;
     }
 
     public void UpdateSelectedBlock(GameObject block)

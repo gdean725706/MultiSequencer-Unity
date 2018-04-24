@@ -38,9 +38,9 @@ public class DrumVoice : MonoBehaviour {
     private static ulong randomSeed;
 
     // Create wavetables & phasors for the components of the voice
-    private Wavetable m_square = new Wavetable(1024);
-    private Wavetable m_sine = new Wavetable(1024);
-    private Wavetable m_sineFM = new Wavetable(1024);
+    private Wavetable m_square = new Wavetable(512);
+    private Wavetable m_sine = new Wavetable(512);
+    private Wavetable m_sineFM = new Wavetable(512);
 
     private Phasor m_phasor;
     private Phasor m_fmPhasor;

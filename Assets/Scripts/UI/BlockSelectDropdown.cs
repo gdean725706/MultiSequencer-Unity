@@ -221,7 +221,10 @@ public class BlockSelectDropdown : MonoBehaviour
 
     public void UpdateSelectedChannel(int value)
     {
-        activeCubes[currentSelection].GetComponent<StepBlock>().setVoiceChannel(value);
-        ValueChanged(currentSelection);
+        if (activeCubes.Count > 0)
+        {
+            activeCubes[currentSelection].GetComponent<StepBlock>().setVoiceChannel(value);
+            ValueChanged(currentSelection);
+        }
     }
 }

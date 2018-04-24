@@ -303,6 +303,7 @@
     <Compile Include="Assets\Scripts\BallDemo\BallGenerator.cs" />
     <Compile Include="Assets\Scripts\BallDemo\BulletController.cs" />
     <Compile Include="Assets\Scripts\BallDemo\WallController.cs" />
+    <Compile Include="Assets\Scripts\OSC\OSC.cs" />
     <Compile Include="Assets\Scripts\Player\ExtendedFlycam.cs" />
     <Compile Include="Assets\Scripts\Player\GunController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />

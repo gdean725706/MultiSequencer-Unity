@@ -114,6 +114,10 @@ public class SequencerPad : MonoBehaviour {
 
     public void SpawnBlock(float offset = 0f)
     {
+        // Prevent blocks spawning inside each other
+        if (Active && !BlockSpawnManager.ChaosMode)
+            return;
+
         if (spawnMarker == null)
         {
             spawnMarker = transform.GetChild(1);

@@ -232,18 +232,13 @@ public class StepBlock : MonoBehaviour
     // -- Called from Audio Thread -- 
     void playStepSound(int stepNumber)
     {
-        if (PlaybackMode == Mode.Sample)
+        switch (PlaybackMode)
         {
-            playActive = true;
-            return;
-        }
-        switch (SoundType)
-        {
-            case Sound.Kick:
-                voice.Ping();
+            case Mode.Sample:
+                playActive = true;
                 break;
-            case Sound.Hat:
-                noise.Ping();
+            case Mode.Voice:
+                voice.Ping();
                 break;
         }
     }
