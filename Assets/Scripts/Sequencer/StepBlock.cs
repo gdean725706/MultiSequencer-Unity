@@ -117,7 +117,11 @@ public class StepBlock : MonoBehaviour
         }
         return voice;
     }
-
+    private void FixedUpdate()
+    {
+        if (transform.position.y < -25f)
+            DestroyStep();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -230,7 +234,6 @@ public class StepBlock : MonoBehaviour
                 }
                 if (Input.GetMouseButtonDown(1))
                 {
-                    spawnManager.RemoveBlock(gameObject);
                     DestroyStep();
                 }
             }
@@ -255,6 +258,8 @@ public class StepBlock : MonoBehaviour
     // Destroy 
     public void DestroyStep()
     {
+        spawnManager.RemoveBlock(gameObject);
+
         foreach (var pad in associatedPads)
         {
             pad.Active = false;

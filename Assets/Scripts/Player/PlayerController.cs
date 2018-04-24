@@ -50,9 +50,15 @@ public class PlayerController : MonoBehaviour
         firstPersonController = GetComponent<FirstPersonController>();
 
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    private void FixedUpdate()
+    {
+        if (transform.position.y < -25f)
+            transform.position = new Vector3(5f, 5f, 5f);
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
         // Spawn cube
 		if (Input.GetKeyDown(KeyCode.C))

@@ -170,13 +170,7 @@ public class BlockSelectDropdown : MonoBehaviour
     {
         activeCubes.Add(obj);
         activeCubesNames.Add(obj.name);
-
-        //if (firstTimeIn)
-        //{
-        //    linkedDrumParams = obj.GetComponent<StepBlock>().GetVoice().GetParams();
-        //    updateToSliders();
-        //    firstTimeIn = false;
-        //}
+        
         if (firstTimeIn)
         {
             currentSelection = 0;
