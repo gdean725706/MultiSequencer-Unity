@@ -48,6 +48,8 @@ public class DrumVoice : MonoBehaviour {
     [Range(0f, 1f)]
     public float ModulationAmountMultiplier = 0f;
 
+    private AudioLowPassFilter LPF;
+
     private void Awake()
     {
         m_phasor = new Phasor(AudioSettings.outputSampleRate, 440.0f, 0f);
@@ -56,6 +58,22 @@ public class DrumVoice : MonoBehaviour {
         m_sine.CreateSine();
         m_sineFM.CreateSine();
         m_fmPhasor.SetFrequency(voiceParams.FMFrequency);
+        LPF = GetComponent<AudioLowPassFilter>();
+    }
+
+    public void SetLPFCutoff(float freq)
+    {
+        LPF.cutoffFrequency = freq;
+    }
+    public void SetLPFRes(float res)
+    {
+        LPF.lowpassResonanceQ = res;
+    }
+
+    public void GetLPFValues(out float freq, out float res)
+    {
+        freq = LPF.cutoffFrequency;
+        res = LPF.lowpassResonanceQ;
     }
 
     // Use this for initialization

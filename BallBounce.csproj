@@ -289,8 +289,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Arkham Interactive\Industrial\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
-    <Compile Include="Assets\AudioPanel.cs" />
-    <Compile Include="Assets\GenerativeUISliders.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\SceneAndURLLoader.cs" />
@@ -320,7 +318,10 @@
     <Compile Include="Assets\Scripts\Sequencer\SequencerLine.cs" />
     <Compile Include="Assets\Scripts\Sequencer\SequencerPad.cs" />
     <Compile Include="Assets\Scripts\Sequencer\StepBlock.cs" />
+    <Compile Include="Assets\Scripts\UI\AudioPanel.cs" />
     <Compile Include="Assets\Scripts\UI\BlockSelectDropdown.cs" />
+    <Compile Include="Assets\Scripts\UI\GenerativeUISliders.cs" />
+    <Compile Include="Assets\Scripts\UI\InputFieldUpdateText.cs" />
     <Compile Include="Assets\Scripts\UI\SampleSelectSlider.cs" />
     <Compile Include="Assets\Scripts\UI\SequencerDirectionDropdown.cs" />
     <Compile Include="Assets\Scripts\UI\SequencerSelectDropdown.cs" />

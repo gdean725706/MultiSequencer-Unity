@@ -26,9 +26,14 @@ public class BlockSelectDropdown : MonoBehaviour
     private Slider fmFreqSlider;
     [SerializeField]
     private Dropdown channelDropDown;
+    [SerializeField]
+    private Slider lowPassCutoffSlider;
+    [SerializeField]
+    private InputField lpCutoffInput;
+    [SerializeField]
+    private Slider lowPassResoSlider;
 
     private DrumVoiceParams linkedDrumParams = new DrumVoiceParams();
-    
 
     bool firstTimeIn = true;
     
@@ -94,6 +99,27 @@ public class BlockSelectDropdown : MonoBehaviour
         linkedDrumParams.SinSqMix = mix;
     }
 
+    public void UpdateLPFFreq(string strFreq)
+    {
+        float f = 0;
+        float.TryParse(strFreq, out f);
+        lowPassCutoffSlider.value = f;
+        UpdateLPFFreq(f);
+
+    }
+    public void UpdateLPFFreq(float freq)
+    {
+        if (activeCubes.Count == 0) return;
+        freq = Mathf.Clamp(freq, 20f, 22000f);
+        activeCubes[currentSelection].GetComponent<StepBlock>().GetVoice().SetLPFCutoff(freq);
+    }
+    public void UpdateLPFRes(float res)
+    {
+        if (activeCubes.Count == 0) return;
+        res = Mathf.Clamp(res, 1f, 10f);
+        activeCubes[currentSelection].GetComponent<StepBlock>().GetVoice().SetLPFRes(res);
+    }
+
     private void updateToSliders()
     {
         startFreq.value = linkedDrumParams.StartFrequency;
@@ -133,6 +159,9 @@ public class BlockSelectDropdown : MonoBehaviour
         fmFreqSlider.interactable = state;
         sinSqMix.interactable = state;
         channelDropDown.interactable = state;
+        lowPassCutoffSlider.interactable = state;
+        lowPassResoSlider.interactable = state;
+        lpCutoffInput.interactable = state;
     }
 
     // Called when a step is spawned
@@ -148,6 +177,12 @@ public class BlockSelectDropdown : MonoBehaviour
         //    updateToSliders();
         //    firstTimeIn = false;
         //}
+        if (firstTimeIn)
+        {
+            currentSelection = 0;
+            ValueChanged(0);
+            firstTimeIn = false;
+        }
         refreshDropdown();
     }
 
@@ -200,6 +235,12 @@ public class BlockSelectDropdown : MonoBehaviour
         linkedDrumParams = block.GetVoice().GetParams();
         channelDropDown.value = block.getVoiceChannel();
         SetMode((int)block.PlaybackMode);
+
+        float cut = 0f, res = 0f;
+        block.GetVoice().GetLPFValues(out cut, out res);
+        lowPassCutoffSlider.value = cut;
+        lowPassResoSlider.value = res;
+        lpCutoffInput.text = cut.ToString();
 
         updateToSliders();
     }

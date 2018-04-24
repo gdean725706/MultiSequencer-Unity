@@ -71,7 +71,7 @@ public class StepBlock : MonoBehaviour
     private BlockSpawnManager spawnManager;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
 
@@ -106,6 +106,15 @@ public class StepBlock : MonoBehaviour
 
     public DrumVoice GetVoice()
     {
+        if (DrumVoiceSource == null)
+        {
+            DrumVoiceSource = GameObject.Find("DrumVoices");
+        }
+        if (voiceChannels == null || voice == null)
+        {
+            voiceChannels = DrumVoiceSource.GetComponentsInChildren<DrumVoice>();
+            voice = voiceChannels[channel];
+        }
         return voice;
     }
 
@@ -232,15 +241,15 @@ public class StepBlock : MonoBehaviour
     // -- Called from Audio Thread -- 
     void playStepSound(int stepNumber)
     {
-        switch (PlaybackMode)
+        if (PlaybackMode == Mode.Sample)
         {
-            case Mode.Sample:
-                playActive = true;
-                break;
-            case Mode.Voice:
-                voice.Ping();
-                break;
+            playActive = true;
         }
+        else if (PlaybackMode == Mode.Voice)
+        {
+            voice.Ping();
+        }
+        return;
     }
 
     // Destroy 
