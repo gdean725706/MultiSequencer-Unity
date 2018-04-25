@@ -46,6 +46,7 @@ public class SequencerDirectionDropdown : MonoBehaviour
         current = Mathf.Clamp(current, 0, traversers.Count);
         drop.value = current;
         lastStepInput.text = traversers[current].GetLastStep().ToString();
+        firstStepInput.text = (traversers[current].GetFirstStep() + 1).ToString();
     }
 
     public void UpdateDirection(int direction)

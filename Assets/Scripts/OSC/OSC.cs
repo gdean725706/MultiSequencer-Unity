@@ -389,6 +389,18 @@ public class UDPPacketIO
     public string outIP = "127.0.0.1";
     public int outPort  = 6161;
 
+    public void setOutIP(string IP)
+    {
+        outIP = IP;
+    }
+
+    public void setOutPort(string port)
+    {
+        int p;
+        int.TryParse(port, out p);
+        outPort = p;
+    }
+
       private UDPPacketIO OscPacketIO;
       Thread ReadThread;
 	  private bool ReaderRunning;

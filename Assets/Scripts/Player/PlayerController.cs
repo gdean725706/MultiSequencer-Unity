@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     public Camera PlayerCamera;
     public Camera SceneCamera;
 
+    [SerializeField]
+    private GameObject MenuUI;
+
     private enum ActiveCamera
     {
         Player = 0,
@@ -32,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
 	// Use this for initialization
 	void Start ()
-    {
+    {   
         if (BlockSpawnManager == null)
         {
             BlockSpawnManager = GameObject.Find("BlockSpawnManager").GetComponent<BlockSpawnManager>();
@@ -91,6 +94,11 @@ public class PlayerController : MonoBehaviour
             PlayerCamera.gameObject.SetActive(!sceneCamActive);
             firstPersonController.enabled = !firstPersonController.enabled;
             activeCam = 1 - activeCam;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            MenuUI.SetActive(!MenuUI.activeSelf);
         }
 
         //if (activeCam == ActiveCamera.Scene)

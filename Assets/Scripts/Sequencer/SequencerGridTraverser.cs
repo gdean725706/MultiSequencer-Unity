@@ -156,17 +156,24 @@ public class SequencerGridTraverser : MonoBehaviour
     public void SetLastStep(int step)
     {
         // Bounds check then set
-        totalSteps = boundsCheck(step);
+        step -= 1;
+        totalSteps = step;
     }
-
-    public void SetFirstStep(int step)
-    {
-        totalSteps = boundsCheck(step);
-  }
 
     public int GetLastStep()
     {
         return totalSteps;
+    }
+
+    public void SetFirstStep(int step)
+    {
+        step -= 1;
+        firstStep = step;
+    }
+
+    public int GetFirstStep()
+    {
+        return firstStep;
     }
 
     private int boundsCheck(int value)

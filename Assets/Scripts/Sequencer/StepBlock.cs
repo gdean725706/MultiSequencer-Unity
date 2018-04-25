@@ -53,6 +53,9 @@ public class StepBlock : MonoBehaviour
     [SerializeField]
     private int channel = 0;
 
+    [SerializeField]
+    private string OscID = "0";
+
     private DrumVoice voice;
 
     public float assocPadAliveSum = 0f;
@@ -70,12 +73,18 @@ public class StepBlock : MonoBehaviour
     [SerializeField]
     private BlockSpawnManager spawnManager;
 
+    public OSC osc;
+    private OscMessage message = new OscMessage();
+
+    private bool sendOSCMessage = false;
+
     // Use this for initialization
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
 
         timer = GameObject.Find("Timer").GetComponent<BPMTimer>();
+        osc = GameObject.Find("OSC").GetComponent<OSC>();
 
         if (DrumVoiceSource == null)
         {
@@ -89,6 +98,9 @@ public class StepBlock : MonoBehaviour
 
         if (voiceChannels != null)
             voice = voiceChannels[channel];
+
+        message.address = "/block/" + OscID;
+        message.values.Add("bang");
 
         UpdateSample(currentSample = (int)Random.Range(0, Samples.Count));
 
@@ -117,11 +129,13 @@ public class StepBlock : MonoBehaviour
         }
         return voice;
     }
+
     private void FixedUpdate()
     {
         if (transform.position.y < -25f)
             DestroyStep();
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -164,7 +178,13 @@ public class StepBlock : MonoBehaviour
         }
         
         isSelected = (spawnManager.GetSelectedBlock() == gameObject);
-        
+
+
+        if (sendOSCMessage)
+        {
+            osc.Send(message);
+            sendOSCMessage = false;
+        }
     }
 
     public void setVoiceChannel(int v)
@@ -252,6 +272,10 @@ public class StepBlock : MonoBehaviour
         {
             voice.Ping();
         }
+        else if (PlaybackMode == Mode.Control)
+        {
+            sendOSCMessage = true;
+        }
         return;
     }
 
@@ -284,6 +308,17 @@ public class StepBlock : MonoBehaviour
     public Mode GetMode()
     {
         return PlaybackMode;
+    }
+
+    public void UpdateOSCID(string id)
+    {
+        OscID = id;
+        message.address = "/block/" + OscID;
+    }
+
+    public string getOSCID()
+    {
+        return OscID;
     }
 
 

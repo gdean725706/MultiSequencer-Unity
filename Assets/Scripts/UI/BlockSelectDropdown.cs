@@ -32,6 +32,8 @@ public class BlockSelectDropdown : MonoBehaviour
     private InputField lpCutoffInput;
     [SerializeField]
     private Slider lowPassResoSlider;
+    [SerializeField]
+    private InputField oscIDInput;
 
     private DrumVoiceParams linkedDrumParams = new DrumVoiceParams();
 
@@ -120,6 +122,12 @@ public class BlockSelectDropdown : MonoBehaviour
         activeCubes[currentSelection].GetComponent<StepBlock>().GetVoice().SetLPFRes(res);
     }
 
+    public void UpdateOSCID(string id)
+    {
+        if (activeCubes.Count == 0) return;
+        activeCubes[currentSelection].GetComponent<StepBlock>().UpdateOSCID(id);
+    }
+
     private void updateToSliders()
     {
         startFreq.value = linkedDrumParams.StartFrequency;
@@ -144,9 +152,12 @@ public class BlockSelectDropdown : MonoBehaviour
                 break;
             case StepBlock.Mode.Control:
                 setAudioSlidersState(false);
+
                 break;
 
         }
+
+        oscIDInput.interactable = (StepBlock.Mode)mode == StepBlock.Mode.Control;
     }
 
     void setAudioSlidersState(bool state)
@@ -235,6 +246,7 @@ public class BlockSelectDropdown : MonoBehaviour
         lowPassCutoffSlider.value = cut;
         lowPassResoSlider.value = res;
         lpCutoffInput.text = cut.ToString();
+        oscIDInput.text = block.getOSCID();
 
         updateToSliders();
     }
