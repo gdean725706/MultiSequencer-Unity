@@ -85,13 +85,16 @@ public class GameOfLife : MonoBehaviour
         int neighboursAlive = 0;
         int currentState = 0;
 
+        // iterate through the grid
         for (int row = 0; row < grid.xSize; ++row)
         {
             for (int col = 0; col < grid.ySize; ++col)
             {
                 neighboursAlive = 0;
+                // Get the current state
                 currentState = _cells[row,col].State;
 
+                // Check the neighbours
                 for (int i = -1; i < 2; ++i)
                 {
                     for (int j = -1; j < 2; ++j)
@@ -99,9 +102,10 @@ public class GameOfLife : MonoBehaviour
                         neighboursAlive += _cells[(row + i + grid.xSize) % grid.xSize,(col + j + grid.ySize) % grid.ySize].State;
                     }
                 }
-
+                
                 neighboursAlive -= currentState;
 
+                // Store outcomes into separate array 
                 if (currentState == 1 && neighboursAlive < 2) _nextCells[row,col] = 0;
                 else if (currentState == 1 && neighboursAlive > 3) _nextCells[row,col] = 0;
                 else if (currentState == 0 && neighboursAlive == 3) _nextCells[row,col] = 1;
@@ -109,6 +113,7 @@ public class GameOfLife : MonoBehaviour
             }
         }
 
+        // Apply outcomes to grid once all CA has been calculated
         for (int row = 0; row < grid.xSize; ++row)
         {
             for (int col = 0; col < grid.ySize; ++col)
