@@ -12,7 +12,7 @@ Sounds can be generated via the inbuilt synthesis engine or through samples, or 
 
 ## Features
  - Procedurally generated 3D grid
- - Multi-directional playheads to traverse the grid, including polyryhtm via first and last step
+ - Multi-directional playheads to traverse the grid, including polyrhythm via first and last step
    - Game of life cellular automata behaviours for unruly results
  - Audio sample playback
  - 8 channel wavetable synthesis percussion voice with parameter controls
