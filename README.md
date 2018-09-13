@@ -2,7 +2,7 @@
 
 3D Multi-Sequencer with procedural sound effects & cellular automata playback behaviours
 
-![img]https://i.imgur.com/Jp7qooZ.jpg)
+![img](https://i.imgur.com/Jp7qooZ.jpg)
 
 
 ## What is it?
