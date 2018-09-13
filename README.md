@@ -15,7 +15,7 @@ Sounds can be generated via the inbuilt synthesis engine or through samples, or 
  - Multi-directional playheads to traverse the grid, including polyrhythm via first and last step
    - Game of life cellular automata behaviours for unruly results
  - Audio sample playback
- - 8 channel wavetable synthesis percussion voice with parameter controls
+ - 8 voice percussive wavetable synthesiser with parameter controls
  - Step spawning management with undo, paint, brush and select modes
  - 1st person walkabout & 3rd person flyaround views with crosshair
  - Open Sound Control (OSC) integration
